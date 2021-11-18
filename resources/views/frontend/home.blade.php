@@ -113,7 +113,7 @@
 					<span class="btn btn-outline-dark button-left"><i class="fas fa-angle-left"></i></span>
 					<span class="btn btn-outline-dark button-right"><i class="fas fa-angle-right"></i></span>
 				</div>
-				<div class="card-header bg-warning text-uppercase text-white">
+				<div class="card-header bg-success text-uppercase text-white">
 					<i class="fab fa-hotjar"></i><b> Sản phẩm đang giảm giá</b>
 				</div>
 				<div class="card-body slider">
