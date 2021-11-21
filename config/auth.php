@@ -40,13 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
         'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
+            'driver' => 'jwt',
+            'provider' => 'accounts',
             'hash' => false,
         ],
-        /*code của mình dưới đây vì hiện tại chưa có api nên thôi chỉ session*/
         'account_admin' =>[
             'driver' => 'session',
             'provider' => 'accounts',

@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'CheckLoginAdmin' => \App\Http\Middleware\CheckLoginAdmin::class,
         'CheckLoginCustomer' => \App\Http\Middleware\CheckLoginCustomer::class,
+        'jwt.auth' => \App\Http\Middleware\VerifyJWTToken::class,
     ];
 }
