@@ -2,7 +2,9 @@
 <div class="navbar navbar-expand-md header">
 		<div class="container">
 			<div class="logo_container">
-				<a href="{{url('/')}}"><img src="{{asset('images/logoWEB/logo_transparent.png')}}" alt="LOGO ĐỒNG HỒ XƯA"></a>ĐỒNG HỒ<span> XƯA</span>
+				<a href="{{url('/')}}">
+					{{-- <img src="{{asset('images/logoWEB/logo_transparent.png')}}" alt=""> --}}
+				</a>SHOP
 			</div>
 			<button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse"  aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
     			<span class="navbar-toggler-icon"></span>

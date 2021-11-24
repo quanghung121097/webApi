@@ -1,6 +1,6 @@
 @extends('frontend.master')
 @section('title')
-	<title>Đồng hồ xưa</title>
+	<title>Shop</title>
 @endsection
 @section('content')
 <?php 

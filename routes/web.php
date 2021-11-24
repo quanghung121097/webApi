@@ -51,7 +51,7 @@ Route::group(['prefix'=>'customer','middleware'=>'CheckLoginCustomer'],function(
 Route::get('signup','CustomerController@getSignup');
 Route::post('signup','CustomerController@postSignup');
 
-/*product nè*/
+/*product */
 Route::get('product','ProductController@getListProduct');//danh sách sản phẩm theo danh mục thêm ?category=id hay các biến get khác
 Route::get('product/detail/{id}','ProductController@getDetailProduct');
 //Route::post('product/search','ProductController@postSearchProduct');

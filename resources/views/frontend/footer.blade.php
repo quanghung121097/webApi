@@ -19,7 +19,7 @@
 				<div class="col-md-5">
 					<legend>Về chúng tôi</legend>
 					<div class="row" style="overflow: auto;">
-						<div class="col-md-3 col-sm-6"><img width="90" src="{{asset('/images/logoWEB/logo.png')}}">
+						{{-- <div class="col-md-3 col-sm-6"><img width="90" src="{{asset('/images/logoWEB/logo.png')}}"> --}}
 						</div>
 						<div class="col-md-9 col-sm-6">
 							<p style="margin: 0 0 0;">Địa chỉ : 55 Thanh ấm, TT Vân Đình, Ứng Hòa, TP. Hà Nội</p>

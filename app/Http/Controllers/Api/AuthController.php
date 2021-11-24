@@ -26,7 +26,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        
+
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
@@ -37,34 +37,34 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-       
+
         $validator = FacadesValidator::make($request->all(), [
             'username' => 'required',
             'password' => 'required',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        // $a=$b;
         $credentials = $request->only('username', 'password');
-        // dd(config());
-        // Config::set('auth.providers.users.model', Account::class);
-        // dd($credentials);
         $token = null;
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['invalid_username_or_password'], 422);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sai thông tin đăng nhập'
+                ], 422);
             }
         } catch (JWTException $e) {
-            return response()->json(['failed_to_create_token'], 500);
+            return response()->json(['Tạo token thất bại'], 500);
         }
-        return response()->json(compact('token'));
-        // if (!$token = auth()->attempt($validator->validated())) {
-        //     return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-
-        return $this->createNewToken($token);
+        $user = auth()->user();
+        return response()->json(
+            [
+                'success' => true,
+                'data' => compact('token','user')
+            ]
+        );
     }
 
     /**
@@ -75,38 +75,41 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $data = $request->all();
-        $validator = FacadesValidator::make($data, [
-            'username' => 'unique:account,username|min:5|max:15',
-            'password' => 'min:5|max:15',
-            'confirm_password' => 'same:password',
-            'phone' => 'digits:10',
-            'gender' => 'required|integer|in:0,1',
-            'email' => 'unique:person,email|email',
-            'full_name' => 'required|max:40',
-            'address' => 'required',
-            'dateOfBirth' => 'required|date|date_format:Y-m-d',
-        ],
-        [
-            'unique' => ':attribute đã tồn tại',
-            'email' => 'Không đúng định dạng email',
-            'min' => ':attribute tối thiểu :min ký tự',
-            'max' => ':attribute tối đa :max ký tự',
-            'digits' => ':attribute gồm :digits số',
-            'same' => ':attribute không khớp mật khẩu đăng ký',
-            'in' => ':attribute nam (1), nữ (0)',
-            'required' => ':attribute là bắt buộc',
-            'integer' => ':attribute là kiểu số nguyên',
-            
-        ],
-        [
-            'username' => 'Tên tài khoản',
-            'password' => 'Mật khẩu',
-            'confirm_password' => 'Mật khẩu xác nhận',
-            'phone' => 'Số điện thoại',
-            'gender' => 'Giới tính',
+        $validator = FacadesValidator::make(
+            $data,
+            [
+                'username' => 'unique:account,username|min:5|max:15',
+                'password' => 'min:5|max:15',
+                'confirm_password' => 'same:password',
+                'phone' => 'digits:10',
+                'gender' => 'required|integer|in:0,1',
+                'email' => 'unique:person,email|email',
+                'full_name' => 'required|max:40',
+                'address' => 'required',
+                'dateOfBirth' => 'required|date|date_format:Y-m-d',
+            ],
+            [
+                'unique' => ':attribute đã tồn tại',
+                'email' => 'Không đúng định dạng email',
+                'min' => ':attribute tối thiểu :min ký tự',
+                'max' => ':attribute tối đa :max ký tự',
+                'digits' => ':attribute gồm :digits số',
+                'same' => ':attribute không khớp mật khẩu đăng ký',
+                'in' => ':attribute nam (1), nữ (0)',
+                'required' => ':attribute là bắt buộc',
+                'integer' => ':attribute là kiểu số nguyên',
 
-        ]);
-        if($validator->fails()){
+            ],
+            [
+                'username' => 'Tên tài khoản',
+                'password' => 'Mật khẩu',
+                'confirm_password' => 'Mật khẩu xác nhận',
+                'phone' => 'Số điện thoại',
+                'gender' => 'Giới tính',
+
+            ]
+        );
+        if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()], 400);
         }
         DB::beginTransaction();
@@ -142,17 +145,14 @@ class AuthController extends Controller
                 'message' => 'Đã đăng ký thành công mời bạn đăng nhập',
                 'data' => ['person' => $person]
             ], 201);
-
         } catch (\Throwable $th) {
             DB::rollBack();
             TelegramService::sendMessage(htmlentities($th->getMessage()));
             return response()->json([
                 'success' => false,
-                'message' => 'Có lỗi xảy ra, vui lòng thử lại!',
-                'error' => htmlentities($th->getMessage())
+                'message' => htmlentities($th->getMessage()),
             ], 500);
         }
-        
     }
 
 
@@ -164,8 +164,10 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-
-        return response()->json(['message' => 'User successfully signed out']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Đăng xuất thành công'
+        ]);
     }
 
     /**
@@ -207,21 +209,22 @@ class AuthController extends Controller
 
     public function changePassWord(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'old_password' => 'required|string|min:6',
-            'new_password' => 'required|string|confirmed|min:6',
+        $validator = FacadesValidator::make($request->all(), [
+            'old_password' => 'required|string|min:5|max:15',
+            'new_password' => 'required|string|confirmed|min:5|max:15',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors(), 400);
         }
         $userId = auth()->user()->id;
 
         $user = Account::where('id', $userId)->update(
             ['password' => bcrypt($request->new_password)]
         );
-
+        auth()->logout();
         return response()->json([
+            'success' => true,
             'message' => 'Thay đổi mật khẩu thành công',
             'user' => $user,
         ], 201);
