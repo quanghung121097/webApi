@@ -22,11 +22,11 @@
 						{{-- <div class="col-md-3 col-sm-6"><img width="90" src="{{asset('/images/logoWEB/logo.png')}}"> --}}
 						</div>
 						<div class="col-md-9 col-sm-6">
-							<p style="margin: 0 0 0;">Địa chỉ : 55 Thanh ấm, TT Vân Đình, Ứng Hòa, TP. Hà Nội</p>
+							<p style="margin: 0 0 0;">Địa chỉ : Triều Khúc, Thanh Xuân, TP. Hà Nội</p>
 							<p style="margin: 0 0 0;">Thời gian làm việc từ 7h sáng 5h chiều mọi ngày trong tuần</p>
 						</div>
 					</div>
-					<legend>Kết nối với chúng tôi <a href="https://www.facebook.com/donghovandinh/"><i class="fab fa-facebook-square fa-2x"></i></a></legend>
+					<legend>Kết nối với chúng tôi <a href="https://www.facebook.com/profile.php?id=100005263327260"><i class="fab fa-facebook-square fa-2x"></i></a></legend>
 				</div>
 			</div>
 		</div>

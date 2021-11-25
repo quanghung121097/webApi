@@ -10,7 +10,6 @@
     <meta name="author" content="">
 
     <title>Đăng nhập trang quản lý</title>
-     <link rel="icon" type="image/png" href="{{asset('images/logoWEB/favicon.png')}}">
     <!-- Custom fonts for this template-->
    	<link href="{{asset('backend/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link
@@ -40,8 +39,8 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block embed-responsive embed-responsive-1by1 "><img class="embed-responsive-item" src="{{asset('images/logoWEB/logo.png')}}">></div>
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6 d-none d-lg-block embed-responsive embed-responsive-1by1 "><img class="embed-responsive-item" src="">></div> --}}
+                            <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Đăng nhập trang quản lý</h1>
