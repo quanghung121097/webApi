@@ -41,7 +41,7 @@ Route::group([
         Route::get('/detail',[ApiProductController::class , 'getDetailProduct']);
         Route::post('/add', [ApiProductController::class , 'postAdd']);
         Route::delete('/delete', [ApiProductController::class , 'delete']);
-        Route::put('/edit', [ApiProductController::class , 'postEdit']);
+        Route::post('/edit', [ApiProductController::class , 'postEdit']);
     });
     Route::get('/updated-activity', [TelegramBotController::class,'updatedActivity']);
     Route::post('/send-message', [TelegramBotController::class,'sendMessage']);

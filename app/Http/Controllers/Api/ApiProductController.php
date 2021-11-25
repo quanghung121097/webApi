@@ -112,6 +112,7 @@ class ApiProductController extends Controller
 
     public function postAdd(Request $request)
     {
+        // dd($request->images);
         $validator = FacadesValidator::make(
             $request->all(),
             [
@@ -163,6 +164,7 @@ class ApiProductController extends Controller
                 $dbImage->save();
             }
             DB::commit();
+            return response()->json(['success' => true, 'message' => 'Tạo mới sản phẩm thành công']);
         } catch (\Throwable $th) {
             DB::rollBack();
             TelegramService::sendMessage(htmlentities($th->getMessage()));
@@ -175,7 +177,7 @@ class ApiProductController extends Controller
 
     public function postEdit(Request $request)
     {
-       
+    //    dd($request->all());
         $validator = FacadesValidator::make(
             $request->all(),
             [
@@ -188,7 +190,8 @@ class ApiProductController extends Controller
                 'category_id' => 'required',
                 'quantity_in_stock' => 'required',
                 'price' => 'required|numeric',
-                // 'images' => 'mimes:jpeg,jpg,png'
+                'images' => 'required',
+                'images.*' => 'mimes:jpeg,png,jpg|max:2048'
             ],
             [
                 'required' => 'Là bắt buộc',
