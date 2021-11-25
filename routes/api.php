@@ -22,15 +22,19 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'api_basic',
 ], function ($router) {
-    Route::prefix('auth/customer')->group(function(){
-        Route::post('/login', [AuthController::class, 'login'])->name('login');
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/refresh-token', [AuthController::class, 'refresh']);
-        Route::get('/user-profile', [AuthController::class, 'userProfile']);
-        Route::post('/change-password', [AuthController::class, 'changePassWord']);
+    Route::group([
+        'middleware' => 'api',
+    ], function ($router) {
+        Route::prefix('auth/customer')->group(function(){
+            Route::post('/login', [AuthController::class, 'login'])->name('login');
+            Route::post('/register', [AuthController::class, 'register']);
+            Route::post('/logout', [AuthController::class, 'logout']);
+            Route::post('/refresh-token', [AuthController::class, 'refresh']);
+            Route::get('/user-profile', [AuthController::class, 'userProfile']);
+            Route::post('/change-password', [AuthController::class, 'changePassWord']);
+        });
     });
     Route::prefix('product')->group(function(){
         Route::get('/search',[ApiProductController::class , 'search']);
@@ -38,7 +42,8 @@ Route::group([
         Route::post('/add', [ApiProductController::class , 'postAdd']);
         Route::delete('/delete', [ApiProductController::class , 'delete']);
         Route::put('/edit', [ApiProductController::class , 'postEdit']);
-    }); 
+    });
+    Route::get('/updated-activity', [TelegramBotController::class,'updatedActivity']);
+    Route::post('/send-message', [TelegramBotController::class,'sendMessage']);
 });
-Route::get('/updated-activity', [TelegramBotController::class,'updatedActivity']);
-Route::post('/send-message', [TelegramBotController::class,'sendMessage']);
+

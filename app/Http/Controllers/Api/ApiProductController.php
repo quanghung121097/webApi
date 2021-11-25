@@ -20,6 +20,7 @@ class ApiProductController extends Controller
     public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
+        $this->middleware('admin',['except' => ['search', 'getDetailProduct']]);
     }
 
     public function search(Request $request)
@@ -246,6 +247,7 @@ class ApiProductController extends Controller
             ], 500);
         }
     }
+
     public function delete(Request $request)
     {
         $id = $request->id;
