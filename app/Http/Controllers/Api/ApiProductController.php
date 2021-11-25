@@ -122,7 +122,8 @@ class ApiProductController extends Controller
                 'category_id' => 'required',
                 'quantity_in_stock' => 'required',
                 'price' => 'required|numeric',
-                // 'images' => 'mimes:jpeg,jpg,png'
+                'images' => 'required',
+                'images.*' => 'mimes:jpeg,png,jpg|max:2048'
             ],
             [
                 'required' => 'Là bắt buộc',
@@ -179,7 +180,7 @@ class ApiProductController extends Controller
             [
                 'id' => 'required',
                 'description' => 'max:2000',
-                'promotion_price' => 'numeric|lt:price',
+                'promotion_price' => 'lt:price',
                 'name' => 'required',
                 'origin' => 'required',
                 'brand' => 'required',

@@ -123,17 +123,18 @@ class ProductController extends Controller
         return view('backend.product.add_edit',['listCategory'=>$listCategory,'product'=>$product]);
     }
     public function postEdit(Request $request,$id){
+        
         $request->validate([
             'stringDescription' => 'max:2000',
             'intPromotion_price' => 'lt:intPrice',
-            'images' => 'mimes:jpeg,jpg,png'
+            'images' => 'required',
+            'images.*' => 'mimes:jpeg,png,jpg|max:2048'
         ],
         [
             'max' => 'Trường trên tối đa :max ký tự',
             'lt' => 'Giá ưu đãi phải nhỏ hơn giá thường',
             'mimes' => 'Ảnh định dạng jpeg,jpg,png'
         ]);
-
     	$listCategory = Category::all();
         $product = Product::find($id);
         $product->name = $request->stringName;
