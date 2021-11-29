@@ -8,7 +8,7 @@ body{
 }
 .header{
 	width: 100%;
-	background-color: #72bb81;
+	background-color: #7278bb;
 	border-bottom: 1px solid gray;
 	position: fixed;
 }
@@ -180,7 +180,7 @@ input[type='number']::-webkit-inner-spin-button {
 }
 /*scroll top*/
 #scroll-top{
-	background-color: #72bb81;
+	background-color: #7278bb;
 	position: fixed;
 	z-index: 100;
 	bottom: 20px;
@@ -191,7 +191,7 @@ input[type='number']::-webkit-inner-spin-button {
 	opacity: 1;
 }
 .border_left{
-	border-left: 10px solid #72bb81;
+	border-left: 10px solid #7278bb;
 }
 /*danh gia*/
 .rate-star input[type=radio]+span{

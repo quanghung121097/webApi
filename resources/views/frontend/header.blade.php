@@ -4,7 +4,7 @@
 			<div class="logo_container">
 				<a href="{{url('/')}}">
 					{{-- <img src="{{asset('images/logoWEB/logo_transparent.png')}}" alt=""> --}}
-				</a>SHOP
+				</a>QHSHOP
 			</div>
 			<button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse"  aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
     			<span class="navbar-toggler-icon"></span>
