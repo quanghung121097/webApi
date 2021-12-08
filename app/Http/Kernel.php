@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'CheckLoginAdmin' => \App\Http\Middleware\CheckLoginAdmin::class,
         'CheckLoginCustomer' => \App\Http\Middleware\CheckLoginCustomer::class,
         'api_basic' => AuthApiShopMiddleware::class,
+        'cors' => \App\Http\Middleware\CorsMiddleware::class,
         'customer' => AuthCustomerMiddleware::class,
         'admin' => AuthAdminMiddleware::class,
     ];

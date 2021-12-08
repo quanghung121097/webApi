@@ -16,6 +16,8 @@ class CheckLoginCustomer
      */
     public function handle(Request $request, Closure $next)
     {
+        // $user = auth()->user();
+        // dd($user);
         if(Auth::guard('account_customer')->check()){
             $account_customer = Auth::guard('account_customer')->user();
             if($account_customer->role='customer'){

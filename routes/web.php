@@ -85,7 +85,7 @@ Route::group(['prefix'=>'admin-page','middleware'=>'CheckLoginAdmin'],function()
 		Route::post('add', 'CategoryController@postAdd');
 		Route::get('edit/{id}', 'CategoryController@getEdit');
 		Route::post('edit/{id}', 'CategoryController@postEdit');
-		Route::get('delete/{id}', 'CategoryController@getDelete');
+		Route::get('delete/{id}', 'CategoryController@getDelete'); 
 	});
 	/*sản phẩm*/
 	Route::group(['prefix'=>'product'],function(){

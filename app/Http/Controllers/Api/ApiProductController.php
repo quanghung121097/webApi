@@ -26,10 +26,11 @@ class ApiProductController extends Controller
     public function search(Request $request)
     {
         $data['page'] = $request->page ?? 1;
-        $data['limit'] = $request->limit ?? 1;
-        $data['select'] = $request->select ?? [];
+        $data['limit'] = $request->limit ?? 30;
+        $data['select'] = $request->select ?? ['id','name','price','quantity_in_stock'];
         $data['sortBy'] =  $request->sortBy ?? 'created_at';
-        $data['paginate'] =  $request->paginate == true ? true : false;
+        // dd(($request->paginate));
+        $data['paginate'] =  isset($request->paginate) ? $request->paginate : true;
         $data['conditions'] = [];
         $errors = [];
         if (isset($request->name)) {
@@ -99,7 +100,7 @@ class ApiProductController extends Controller
     {
         $id = $request->id;
         if (empty($id)) {
-            return response(['success' => false, 'message' => 'Thiếu id sản phẩm']);
+            return response(['success' => false, 'message' => 'Thiếu id sản phẩm'],400);
         }
         $product_detail = Product::find($id);
         $listReview = Review::whereHas('order_item', function ($query) use ($id) {
@@ -112,7 +113,6 @@ class ApiProductController extends Controller
 
     public function postAdd(Request $request)
     {
-        // dd($request->images);
         $validator = FacadesValidator::make(
             $request->all(),
             [
@@ -122,7 +122,7 @@ class ApiProductController extends Controller
                 'origin' => 'required',
                 'brand' => 'required',
                 'category_id' => 'required',
-                'quantity_in_stock' => 'required',
+                'quantity_in_stock' => 'required|numeric',
                 'price' => 'required|numeric',
                 'images' => 'required',
                 'images.*' => 'mimes:jpeg,png,jpg|max:2048'
@@ -136,6 +136,10 @@ class ApiProductController extends Controller
         );
         if ($validator->fails()) {
             return response()->json(['success' => false, 'message' => $validator->errors()], 400);
+        }
+        $category = Category::find($request->category_id);
+        if (empty($category)) {
+            return response()->json(['success' => false, 'message' => 'Danh mục không tồn tại'], 404);
         }
         DB::beginTransaction();
         try {
@@ -177,7 +181,7 @@ class ApiProductController extends Controller
 
     public function postEdit(Request $request)
     {
-    //    dd($request->all());
+        // dd($request);
         $validator = FacadesValidator::make(
             $request->all(),
             [
@@ -204,10 +208,21 @@ class ApiProductController extends Controller
             return response()->json(['success' => false, 'message' => $validator->errors()], 400);
         }
         $id = $request->id;
+        $product = Product::find($id);
+        if(empty($product)){
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy sản phẩm',
+            ], 404);
+        }
+        $category = Category::find($request->category_id);
+        if (empty($category)) {
+            return response()->json(['success' => false, 'message' => 'Danh mục không tồn tại'], 404);
+        }
         DB::beginTransaction();
         try {
-            $listCategory = Category::all();
-            $product = Product::find($id);
+            
+            
             $product->name = $request->name;
             $product->brand = $request->brand;
             $product->origin = $request->origin;
@@ -259,6 +274,13 @@ class ApiProductController extends Controller
                 'success' => false,
                 'message' => 'Thiếu id sản phẩm',
             ], 400);
+        }
+        $product = Product::find($id);
+        if(empty($product)){
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy sản phẩm',
+            ], 404);
         }
         DB::beginTransaction();
         try {

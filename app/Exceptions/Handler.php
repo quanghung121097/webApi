@@ -90,10 +90,8 @@ class Handler extends ExceptionHandler
             }
             return response([
                 'success' => false,
-                'message' => $exception->getMessage(),
-                // 'file' => $exception->getFile(),
-                // 'line' => $exception->getLine() ,
-                // 'code' => $exception->getCode()
+                // 'message' => $exception->getMessage(),
+                'message' => 'Có lỗi xảy ra. Vui lòng thử lại sau!',
             ],500);
         } else {
             return parent::render($request, $exception);

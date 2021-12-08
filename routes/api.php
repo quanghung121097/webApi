@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiProductController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TelegramBotController;
@@ -27,7 +28,7 @@ Route::group([
     Route::group([
         'middleware' => 'api',
     ], function ($router) {
-        Route::prefix('auth/customer')->group(function(){
+        Route::prefix('auth/')->group(function () {
             Route::post('/login', [AuthController::class, 'login'])->name('login');
             Route::post('/register', [AuthController::class, 'register']);
             Route::post('/logout', [AuthController::class, 'logout']);
@@ -36,14 +37,16 @@ Route::group([
             Route::post('/change-password', [AuthController::class, 'changePassWord']);
         });
     });
-    Route::prefix('product')->group(function(){
-        Route::get('/search',[ApiProductController::class , 'search']);
-        Route::get('/detail',[ApiProductController::class , 'getDetailProduct']);
-        Route::post('/add', [ApiProductController::class , 'postAdd']);
-        Route::delete('/delete', [ApiProductController::class , 'delete']);
-        Route::post('/edit', [ApiProductController::class , 'postEdit']);
+    Route::prefix('product')->group(function () {
+        Route::get('/search', [ApiProductController::class, 'search']);
+        Route::get('/detail', [ApiProductController::class, 'getDetailProduct']);
+        Route::post('/add', [ApiProductController::class, 'postAdd']);
+        Route::delete('/delete', [ApiProductController::class, 'delete']);
+        Route::put('/edit', [ApiProductController::class, 'postEdit']);
     });
-    Route::get('/updated-activity', [TelegramBotController::class,'updatedActivity']);
-    Route::post('/send-message', [TelegramBotController::class,'sendMessage']);
+    Route::get('/updated-activity', [TelegramBotController::class, 'updatedActivity']);
+    Route::post('/send-message', [TelegramBotController::class, 'sendMessage']);
+    Route::prefix('order')->group(function () {
+        Route::post('/', [ApiOrderController::class, 'postAddOrder'])->middleware('CheckLoginCustomer');
+    });
 });
-

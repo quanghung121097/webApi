@@ -20,7 +20,7 @@ class AuthApiShopMiddleware
         if ($request->header('username') == env('USER_NAME_API','quanghung') && $request->header('password') == env('PASSWORD_API','jubcsvd734934556@!JJhka')) {
             return $next($request);
         }
-        return response(['success' =>false , 'message' => 'Ứng dụng không có quyền truy cập hệ thống']);
+        return response(['success' =>false , 'message' => 'Ứng dụng không có quyền truy cập hệ thống'],403);
        
     }
 }

@@ -12,6 +12,7 @@ use App\Services\TelegramService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -105,7 +106,7 @@ class AuthController extends Controller
             $data,
             [
                 'username' => 'unique:account,username|min:5|max:15',
-                'password' => 'min:5|max:15',
+                'password' => 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
                 'confirm_password' => 'same:password',
                 'phone' => 'digits:10',
                 'gender' => 'required|integer|in:0,1',
@@ -124,6 +125,7 @@ class AuthController extends Controller
                 'in' => ':attribute nam (1), nữ (0)',
                 'required' => ':attribute là bắt buộc',
                 'integer' => ':attribute là kiểu số nguyên',
+                'regex' => ':attribute tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường và một số'
 
             ],
             [
@@ -213,7 +215,10 @@ class AuthController extends Controller
      */
     public function userProfile()
     {
-        return response()->json(auth()->user());
+        return response()->json([
+                'success' => true,
+                'data' => auth()->user(),
+        ]);
     }
 
     /**
@@ -235,14 +240,28 @@ class AuthController extends Controller
 
     public function changePassWord(Request $request)
     {
+        if(!Hash::check($request->old_password, auth()->user()->password)){
+            return response()->json(['success' => false, 'message' => ['old_password' => 'Mật khẩu cũ không chính xác']], 400);
+        }
         $validator = FacadesValidator::make($request->all(), [
             'old_password' => 'required|string|min:5|max:15',
-            'new_password' => 'required|string|confirmed|min:5|max:15',
+            'new_password' => 'required|string|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
+        ],
+        [
+            'required' => ':attribute là bắt buộc',
+            'confirmed' => 'Mật khẩu xác nhận không khớp',
+            'regex' => ':attribute tối thiểu tám ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường và một số'
+
+        ],
+        [
+            'old_password' => 'Mật khẩu cũ',
+            'new_password' => 'Mật khẩu mới'
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            return response()->json(['success' => false, 'message' => $validator->errors()], 400);
         }
+        
         $userId = auth()->user()->id;
 
         $user = Account::where('id', $userId)->update(
@@ -252,7 +271,6 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Thay đổi mật khẩu thành công',
-            'user' => $user,
         ], 201);
     }
 }
