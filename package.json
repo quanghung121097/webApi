@@ -14,5 +14,16 @@
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14"
+    },
+    "apidoc": {
+        "name": "Hệ thống API QHShop",
+        "version": "1.0.0",
+        "description": "",
+        "defaultVersion": "1.0.0",
+        "sampleUrl": true,
+        "apidoc": {
+            "title": "Hệ thống API QHShop",
+            "url": "https://qhshop.xyz"
+        }
     }
 }
