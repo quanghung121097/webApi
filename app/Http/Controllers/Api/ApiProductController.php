@@ -29,7 +29,6 @@ class ApiProductController extends Controller
         $data['limit'] = $request->limit ?? 30;
         $data['select'] = $request->select ?? ['id','name','price','quantity_in_stock'];
         $data['sortBy'] =  $request->sortBy ?? 'created_at';
-        // dd(($request->paginate));
         $data['paginate'] =  isset($request->paginate) ? $request->paginate : true;
         $data['conditions'] = [];
         $errors = [];
@@ -266,6 +265,113 @@ class ApiProductController extends Controller
         }
     }
 
+    /**
+     * @api {DELETE} /api/product/delete Xóa sản phẩm
+     * @apiName Xóa sản phẩm
+     * @apiGroup Product
+     *
+     * @apiHeader {String} Content-Type application/json
+     * @apiHeader {String} Authorization Bearer Token
+     * @apiSuccess {boolean} success Trạng thái (Thành công hoặc thất bại).
+     * @apiSuccess {string} message Nội dung thông báo (nếu có lỗi thì thông báo lỗi).
+     * @apiSampleRequest https://qhshop.xyz/api/auth/delete
+     * @apiBody {String} [id="6"]
+     * @apiExample Curl
+     *  curl --location --request DELETE "https://qhshop.xyz/api/auth/delete" \
+     *      -H  'Content-Type: application/json' \
+     *      -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY' \
+     *      -d '{
+     *             "id": 6
+     *       }'
+     *
+     * @apiExample Node.js
+     * const axios = require('axios');
+     * try {
+     * const response = await axios({
+     *   method: 'DELETE',
+     *   url: 'https://qhshop.xyz/api/auth/delete',
+     *   headers: {
+     *      'Content-Type': 'application/json',
+     *      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     *   },
+     *   data: {
+     *             "id": 6
+     *  }
+     * });
+     * console.log(response);
+     * } catch (error) {
+     * console.error(error);
+     * }
+     * @apiExample PHP
+     * <?php
+     * //Sử dụng pecl_http
+     * $client = new http\Client;
+     * $request = new http\Client\Request;
+     * $request->setRequestUrl('https://qhshop.xyz/api/auth/delete');
+     * $request->setRequestMethod('DELETE');
+     * $body = new http\Message\Body;
+     * $body->append('{
+     *             "id": 6
+     * }');
+     * $request->setBody($body);
+     * $request->setOptions(array());
+     * $request->setHeaders(array(
+     * 'Content-Type' => 'application/json',
+     * 'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     * ));
+     * $client->enqueue($request)->send();
+     * $response = $client->getResponse();
+     * echo $response->getBody();
+     * @apiExample Python:
+     * import http.client
+     * import mimetypes
+     * conn = http.client.HTTPSConnection("https://qhshop.xyz")
+     * payload = '{
+     *             "id": 6
+     * }'
+     * conn.request("DELETE", "/api/auth/delete", payload, headers);
+     * res = conn.getresponse()
+     * data = res.read()
+     * print(data.decode("utf-8"))
+     *
+     * @apiSuccessExample Success-Response
+     * HTTP/1.1 200 OK
+     * {
+     *      "success": true,
+     *      "message": "Xóa sản phẩm thành công"
+     * }
+     * @apiErrorExample  Error-Response
+     *
+     *HTTP/1.1 401 Unauthorized
+     *{
+     *"success": false,
+     *"message": "Unauthenticated."
+     *}
+     * 
+     * *
+     *HTTP/1.1 401 Unauthorized
+     *{
+     *"success": false,
+     *"message": "Tài khoản không có quyền thực hiện hành động này."
+     *}
+     *
+     *HTTP/1.1 400 Bad Request
+     *{
+     *"success": false,
+     *"message": "Thiếu id sản phẩm"
+     *}
+     *
+     *HTTP/1.1 404 Not Found
+     *{
+     *"success": false,
+     *"message": "Không tìm thấy sản phẩm"
+     *}
+     * HTTP/1.1 500 Internal Server Error
+     *{
+     * "success": false,
+     * "message": "Có lỗi xảy ra. Vui lòng thử lại sau!"
+     *}
+     */
     public function delete(Request $request)
     {
         $id = $request->id;

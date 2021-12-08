@@ -67,7 +67,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Curl",
-        "content": "curl --location --request GET \"https://qhshop.xyz/api/auth/user-profile\" \\\n    -H  'Content-Type: application/json' \\\n    -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'",
+        "content": "curl --location --request GET \"https://qhshop.xyz/api/auth/user-profile\" \\\n    -H  'Content-Type: application/json' \\\n    -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY' \\",
         "type": "json"
       },
       {
@@ -673,17 +673,17 @@ define({ "api": [
     "examples": [
       {
         "title": "Curl",
-        "content": "curl --location --request POST \"https://qhshop.xyz/api/auth/change-password\" \\\n    -H  'Content-Type: application/json' \\\n    -d '{\n           \"old_password\": \"Quanghung1210\",\n           \"new_password\": \"Quanghung121097\",\n           \"new_password_confirmation\": \"Quanghung121097\"\n     }'",
+        "content": "curl --location --request POST \"https://qhshop.xyz/api/auth/change-password\" \\\n    -H  'Content-Type: application/json' \\\n    -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY' \\\n    -d '{\n           \"old_password\": \"Quanghung1210\",\n           \"new_password\": \"Quanghung121097\",\n           \"new_password_confirmation\": \"Quanghung121097\"\n     }'",
         "type": "json"
       },
       {
         "title": "Node.js",
-        "content": "const axios = require('axios');\ntry {\nconst response = await axios({\n  method: 'POST',\n  url: 'https://qhshop.xyz/api/auth/change-password',\n  headers: {\n     'Content-Type': 'application/json'\n  },\n  data: {\n            \"old_password\": \"Quanghung1210\",\n            \"new_password\": \"Quanghung121097\",\n            \"new_password_confirmation\": \"Quanghung121097\"\n }\n});\nconsole.log(response);\n} catch (error) {\nconsole.error(error);\n}",
+        "content": "const axios = require('axios');\ntry {\nconst response = await axios({\n  method: 'POST',\n  url: 'https://qhshop.xyz/api/auth/change-password',\n  headers: {\n     'Content-Type': 'application/json',\n     'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n  },\n  data: {\n            \"old_password\": \"Quanghung1210\",\n            \"new_password\": \"Quanghung121097\",\n            \"new_password_confirmation\": \"Quanghung121097\"\n }\n});\nconsole.log(response);\n} catch (error) {\nconsole.error(error);\n}",
         "type": "json"
       },
       {
         "title": "PHP",
-        "content": "<?php\n//Sử dụng pecl_http\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n$request->setRequestUrl('https://qhshop.xyz/api/auth/change-password');\n$request->setRequestMethod('POST');\n$body = new http\\Message\\Body;\n$body->append('{\n            \"old_password\": \"Quanghung1210\",\n            \"new_password\": \"Quanghung121097\",\n            \"new_password_confirmation\": \"Quanghung121097\"\n}');\n$request->setBody($body);\n$request->setOptions(array());\n$request->setHeaders(array(\n'Content-Type' => 'application/json'\n));\n$client->enqueue($request)->send();\n$response = $client->getResponse();\necho $response->getBody();",
+        "content": "<?php\n//Sử dụng pecl_http\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n$request->setRequestUrl('https://qhshop.xyz/api/auth/change-password');\n$request->setRequestMethod('POST');\n$body = new http\\Message\\Body;\n$body->append('{\n            \"old_password\": \"Quanghung1210\",\n            \"new_password\": \"Quanghung121097\",\n            \"new_password_confirmation\": \"Quanghung121097\"\n}');\n$request->setBody($body);\n$request->setOptions(array());\n$request->setHeaders(array(\n'Content-Type' => 'application/json',\n'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n));\n$client->enqueue($request)->send();\n$response = $client->getResponse();\necho $response->getBody();",
         "type": "json"
       },
       {
@@ -704,5 +704,108 @@ define({ "api": [
     "version": "1.0.0",
     "filename": "app/Http/Controllers/Api/AuthController.php",
     "groupTitle": "Authentication"
+  },
+  {
+    "type": "DELETE",
+    "url": "/api/product/delete",
+    "title": "Xóa sản phẩm",
+    "name": "Xóa_sản_phẩm",
+    "group": "Product",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer Token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Trạng thái (Thành công hoặc thất bại).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Nội dung thông báo (nếu có lỗi thì thông báo lỗi).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n     \"success\": true,\n     \"message\": \"Xóa sản phẩm thành công\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "sampleRequest": [
+      {
+        "url": "https://qhshop.xyz/api/auth/delete"
+      }
+    ],
+    "body": [
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "id",
+        "defaultValue": "6",
+        "description": ""
+      }
+    ],
+    "examples": [
+      {
+        "title": "Curl",
+        "content": "curl --location --request DELETE \"https://qhshop.xyz/api/auth/delete\" \\\n    -H  'Content-Type: application/json' \\\n    -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY' \\\n    -d '{\n           \"id\": 6\n     }'",
+        "type": "json"
+      },
+      {
+        "title": "Node.js",
+        "content": "const axios = require('axios');\ntry {\nconst response = await axios({\n  method: 'DELETE',\n  url: 'https://qhshop.xyz/api/auth/delete',\n  headers: {\n     'Content-Type': 'application/json',\n     'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n  },\n  data: {\n            \"id\": 6\n }\n});\nconsole.log(response);\n} catch (error) {\nconsole.error(error);\n}",
+        "type": "json"
+      },
+      {
+        "title": "PHP",
+        "content": "<?php\n//Sử dụng pecl_http\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n$request->setRequestUrl('https://qhshop.xyz/api/auth/delete');\n$request->setRequestMethod('DELETE');\n$body = new http\\Message\\Body;\n$body->append('{\n            \"id\": 6\n}');\n$request->setBody($body);\n$request->setOptions(array());\n$request->setHeaders(array(\n'Content-Type' => 'application/json',\n'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n));\n$client->enqueue($request)->send();\n$response = $client->getResponse();\necho $response->getBody();",
+        "type": "json"
+      },
+      {
+        "title": "Python:",
+        "content": "import http.client\nimport mimetypes\nconn = http.client.HTTPSConnection(\"https://qhshop.xyz\")\npayload = '{\n            \"id\": 6\n}'\nconn.request(\"DELETE\", \"/api/auth/delete\", payload, headers);\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))",
+        "type": "json"
+      }
+    ],
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response",
+          "content": "\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Unauthenticated.\"\n}\n\n*\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Tài khoản không có quyền thực hiện hành động này.\"\n}\n\nHTTP/1.1 400 Bad Request\n{\n\"success\": false,\n\"message\": \"Thiếu id sản phẩm\"\n}\n\nHTTP/1.1 404 Not Found\n{\n\"success\": false,\n\"message\": \"Không tìm thấy sản phẩm\"\n}\nHTTP/1.1 500 Internal Server Error\n{\n\"success\": false,\n\"message\": \"Có lỗi xảy ra. Vui lòng thử lại sau!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/Api/ApiProductController.php",
+    "groupTitle": "Product"
   }
 ] });
