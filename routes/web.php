@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,10 @@ Route::get('contact','PageController@getContact');
 /*tài khoản*/
 Route::get('login','AccountController@getLoginCustomer');
 Route::post('login','AccountController@postLoginCustomer');
+Route::get('/config-cache', function() {
+    $exitCode = Artisan::call('config:cache');
+    return '<h1>Clear Config cleared</h1>';
+});
 Route::get('logout','AccountController@getLogoutCustomer');
 /*đặt hàng*/
 Route::get('order','OrderController@getAdd')->middleware('CheckLoginCustomer');
