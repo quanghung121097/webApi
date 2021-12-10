@@ -16,13 +16,13 @@
         "postcss": "^8.1.14"
     },
     "apidoc": {
-        "name": "Hệ thống API QHShop",
+        "name": "Nguyễn Văn Quang Hưng - AT130825",
         "version": "1.0.0",
         "description": "",
         "defaultVersion": "1.0.0",
         "sampleUrl": true,
         "apidoc": {
-            "title": "Hệ thống API QHShop",
+            "title": "Nguyễn Văn Quang Hưng - AT130825",
             "url": "https://qhshop.xyz"
         }
     }

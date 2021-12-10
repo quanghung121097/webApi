@@ -31,8 +31,6 @@ class ApiProductController extends Controller
      * @apiGroup Product
      *
      * @apiHeader {String} Content-Type application/json
-     * @apiHeader {String} username quanghung
-     * @apiHeader {String} password jubcsvd734934556@!JJhka
      * @apiSampleRequest https://qhshop.xyz/api/product/search
      * @apiBody {Number} [limit="1"]
      * @apiBody {String} [name="iphone"]
@@ -255,7 +253,126 @@ class ApiProductController extends Controller
             return response(['success' => false, 'message' => $errors ?? 'Có lỗi xảy ra vui lòng thử lại']);
         }
     }
-
+    /**
+     * @api {GET} /api/product/detail Chi tiết sản phẩm
+     * @apiName detail
+     * @apiGroup Product
+     *
+     * @apiParam (Body) {int} id Id sản phẩm cần xem (bắt buộc)
+     * @apiHeader {String} Content-Type application/json
+     * @apiSampleRequest https://qhshop.xyz/api/product/detail
+     * @apiBody {String} [id="6"]
+     * @apiExample Curl
+     *  curl --location --request GET "https://qhshop.xyz/api/product/detail" \
+     *      -H  'Content-Type: application/json' \
+     *      -d '{
+     *              "id": 6
+     *       }'
+     *
+     * @apiExample Node.js
+     * const axios = require('axios');
+     * try {
+     * const response = await axios({
+     *   method: 'GET',
+     *   url: 'https://qhshop.xyz/api/product/detail',
+     *   headers: {
+     *      'Content-Type': 'application/json'
+     *   },
+     *   data: {
+     *             "id": 6
+     *  }
+     * });
+     * console.log(response);
+     * } catch (error) {
+     * console.error(error);
+     * }
+     * @apiExample PHP
+     * <?php
+     * //Sử dụng pecl_http
+     * $client = new http\Client;
+     * $request = new http\Client\Request;
+     * $request->setRequestUrl('https://qhshop.xyz/api/product/detail');
+     * $request->setRequestMethod('GET');
+     * $body = new http\Message\Body;
+     * $body->append('{
+     *             "id": 6
+     * }');
+     * $request->setBody($body);
+     * $request->setOptions(array());
+     * $request->setHeaders(array(
+     * 'Content-Type' => 'application/json'
+     * ));
+     * $client->enqueue($request)->send();
+     * $response = $client->getResponse();
+     * echo $response->getBody();
+     * @apiExample Python:
+     * import http.client
+     * import mimetypes
+     * conn = http.client.HTTPSConnection("https://qhshop.xyz")
+     * payload = {
+     *      "id": 6
+     * }
+     * headers = {
+     *  'Content-type': 'application/json'
+     *}
+     * conn.request("GET", "/api/product/detail", payload, headers);
+     * res = conn.getresponse()
+     * data = res.read()
+     * print(data.decode("utf-8"))
+     *
+     * @apiSuccessExample Success-Response
+     * HTTP/1.1 200 OK
+     * {
+     *      "success": true,
+     *      "data": {
+     *        "product_detail": {
+     *            "id": 6,
+     *            "category_id": 12,
+     *            "name": "Apple Watch Seri 3",
+     *            "brand": "Apple",
+     *            "origin": "US",
+     *            "price": 1000000,
+     *            "promotion_price": 0,
+     *            "description": null,
+     *            "enabled": 1,
+     *            "quantity_in_stock": 99,
+     *            "views": 24,
+     *            "created_at": "2020-11-02T02:58:04.000000Z",
+     *            "updated_at": "2021-12-10T16:01:03.000000Z"
+     *        },
+     *        "listReview": [
+     *            {
+     *                "id": 3,
+     *                "rate": 4,
+     *                "comment": "bthg",
+     *                "reviewed": 1,
+     *                "created_at": "2020-11-26T19:18:24.000000Z",
+     *            },
+     *            {
+     *                "id": 8,
+     *                "rate": 4,
+     *                "comment": "hay hú",
+     *                "reviewed": 1,
+     *                "created_at": "2020-11-26T19:22:13.000000Z",
+     *                "updated_at": "2020-11-30T07:49:18.000000Z"
+     *            }
+     *       ]
+     *    }
+     * }
+     * @apiErrorExample  Error-Response
+     *
+     *HTTP/1.1 400 Bad Request
+     *{
+     *"success": false,
+     *"message": "Thiếu id sản phẩm"
+     *}
+     *
+     * HTTP/1.1 500 Internal Server Error
+     *{
+     * "success": false,
+     * "data": "Có lỗi xảy ra. Vui lòng thử lại sau!"
+     *}
+     */
     public function getDetailProduct(Request $request)
     {
         $id = $request->id;
@@ -271,6 +388,158 @@ class ApiProductController extends Controller
         return response(['success' => true, 'data' => ['product_detail' => $product_detail, 'listReview' => $listReview]]);
     }
 
+    /**
+     * @api {POST} /api/product/add Thêm mới sản phẩm
+     * @apiName Add
+     * @apiGroup Product
+     *
+     * @apiHeader {String} Content-Type application/json
+     * @apiSampleRequest https://qhshop.xyz/api/product/add
+     * @apiParam (Body) {Array} images Ảnh sản phẩm (base64) (bắt buộc)
+     * @apiParam (Body) {String} name Tên sản phẩm.
+     * @apiParam (Body) {String} description Mô tả sản phẩm (bắt buộc).
+     * @apiParam (Body) {String} origin Xuất xứ (bắt buộc).
+     * @apiParam (Body) {String} brand Thương hiệu.
+     * @apiParam (Body) {int} category_id id danh mục (bắt buộc).
+     * @apiParam (Body) {int} price Giá bán (bắt buộc).
+     * @apiParam (Body) {int} promotion_price Giá khuyến mại (nhỏ hơn giá bán)
+     * @apiParam (Body) {int} quantity_in_stock Số lượng trong kho(bắt buộc).
+     * @apiBody {Array} [images]
+     * @apiBody {String} [name]
+     * @apiBody {String} [description]
+     * @apiBody {String} [origin]
+     * @apiBody {String} [brand]
+     * @apiBody {Number} [category_id]
+     * @apiBody {Number} [price]
+     * @apiBody {Number} [promotion_price]
+     * @apiBody {Number} [quantity_in_stock]
+     * @apiExample Curl
+     *  curl --location --request POST "https://qhshop.xyz/api/product/add" \
+     *      -H  'Content-Type: application/json' \
+     *      -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY' \
+     *      -d '{
+     *              "images": [...],
+     *              "name": "iphone",
+     *              "description" : "iphone",
+     *              "origin" : "US",
+     *              "brand" : "Apple",
+     *              "category_id": 9,
+     *              "price": 1000000,
+     *              "promotion_price": 999000,
+     *              "quantity_in_stock" : 10
+     *
+     *       }'
+     * @apiExample Node.js
+     * const axios = require('axios');
+     * try {
+     * const response = await axios({
+     *   method: 'POST',
+     *   url: 'https://qhshop.xyz/api/product/add',
+     *   headers: {
+     *      'Content-Type': 'application/json',
+     *      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     *   },
+     *   data: {
+     *              "images": [...],
+     *              "name": "iphone",
+     *              "description" : "iphone",
+     *              "origin" : "US",
+     *              "brand" : "Apple",
+     *              "category_id": 9,
+     *              "price": 1000000,
+     *              "promotion_price": 999000,
+     *              "quantity_in_stock" : 10
+     *  }
+     * });
+     * console.log(response);
+     * } catch (error) {
+     * console.error(error);
+     * }
+     * @apiExample PHP
+     * <?php
+     * //Sử dụng pecl_http
+     * $client = new http\Client;
+     * $request = new http\Client\Request;
+     * $request->setRequestUrl('https://qhshop.xyz/api/product/add');
+     * $request->setRequestMethod('POST');
+     * $body = new http\Message\Body;
+     * $body->append('{
+     *              "images": [...],
+     *              "name": "iphone",
+     *              "description" : "iphone",
+     *              "origin" : "US",
+     *              "brand" : "Apple",
+     *              "category_id": 9,
+     *              "price": 1000000,
+     *              "promotion_price": 999000,
+     *              "quantity_in_stock" : 10
+     * }');
+     * $request->setBody($body);
+     * $request->setOptions(array());
+     * $request->setHeaders(array(
+     * 'Content-Type' => 'application/json',
+     * 'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     * ));
+     * $client->enqueue($request)->send();
+     * $response = $client->getResponse();
+     * echo $response->getBody();
+     * @apiExample Python:
+     * import http.client
+     * import mimetypes
+     * conn = http.client.HTTPSConnection("https://qhshop.xyz")
+     * payload = {
+     *              "images": [...],
+     *              "name": "iphone",
+     *              "description" : "iphone",
+     *              "origin" : "US",
+     *              "brand" : "Apple",
+     *              "category_id": 9,
+     *              "price": 1000000,
+     *              "promotion_price": 999000,
+     *              "quantity_in_stock" : 10,
+     * }
+     * headers = {
+     *  'Content-type': 'application/json',
+     *  'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     *}
+     * conn.request("POST", "/api/product/add", payload, headers);
+     * res = conn.getresponse()
+     * data = res.read()
+     * print(data.decode("utf-8"))
+     *
+     * @apiSuccessExample Success-Response
+     * HTTP/1.1 200 OK
+     * {
+     *      "success": true,
+     *      "message": "Tạo mới sản phẩm thành công"
+     * }
+     * @apiErrorExample  Error-Response
+     *
+     *HTTP/1.1 401 Unauthorized
+     *{
+     *"success": false,
+     *"message": "Unauthenticated."
+     *}
+     * 
+     * *
+     *HTTP/1.1 401 Unauthorized
+     *{
+     *"success": false,
+     *"message": "Tài khoản không có quyền thực hiện hành động này."
+     *}
+     *
+     *HTTP/1.1 400 Bad Request
+     *{
+     *"success": false,
+     *"message": [...]
+     *}
+     *
+     * HTTP/1.1 500 Internal Server Error
+     *{
+     * "success": false,
+     * "message": "Có lỗi xảy ra. Vui lòng thử lại sau!"
+     *}
+     */
     public function postAdd(Request $request)
     {
 
@@ -339,7 +608,169 @@ class ApiProductController extends Controller
             ], 500);
         }
     }
-
+    /**
+     * @api {PUT} /api/product/edit Sửa mới sản phẩm
+     * @apiName Edit
+     * @apiGroup Product
+     *
+     * @apiHeader {String} Content-Type application/json
+     * @apiSampleRequest https://qhshop.xyz/api/product/edit
+     * @apiParam (Body) {int} id Id sản phẩm cần sửa (bắt buộc)
+     * @apiParam (Body) {Array} images Ảnh sản phẩm (base64) (bắt buộc)
+     * @apiParam (Body) {String} name Tên sản phẩm.
+     * @apiParam (Body) {String} description Mô tả sản phẩm (bắt buộc).
+     * @apiParam (Body) {String} origin Xuất xứ (bắt buộc).
+     * @apiParam (Body) {String} brand Thương hiệu.
+     * @apiParam (Body) {int} category_id Id danh mục (bắt buộc).
+     * @apiParam (Body) {int} price Giá bán (bắt buộc).
+     * @apiParam (Body) {int} promotion_price Giá khuyến mại (nhỏ hơn giá bán)
+     * @apiParam (Body) {int} quantity_in_stock Số lượng trong kho(bắt buộc).
+     * @apiBody {Array} [images]
+     * @apiBody {String} [name]
+     * @apiBody {String} [description]
+     * @apiBody {String} [origin]
+     * @apiBody {String} [brand]
+     * @apiBody {Number} [category_id]
+     * @apiBody {Number} [price]
+     * @apiBody {Number} [promotion_price]
+     * @apiBody {Number} [quantity_in_stock]
+     * @apiExample Curl
+     *  curl --location --request PUT "https://qhshop.xyz/api/product/edit" \
+     *      -H  'Content-Type: application/json' \
+     *      -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY' \
+     *      -d '{
+     *              "id": 22,
+     *              "images": [...],
+     *              "name": "iphone",
+     *              "description" : "iphone",
+     *              "origin" : "US",
+     *              "brand" : "Apple",
+     *              "category_id": 9,
+     *              "price": 1000000,
+     *              "promotion_price": 999000,
+     *              "quantity_in_stock" : 10
+     *
+     *       }'
+     * @apiExample Node.js
+     * const axios = require('axios');
+     * try {
+     * const response = await axios({
+     *   method: 'PUT',
+     *   url: 'https://qhshop.xyz/api/product/edit',
+     *   headers: {
+     *      'Content-Type': 'application/json',
+     *      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     *   },
+     *   data: {
+     *              "id": 22,
+     *              "images": [...],
+     *              "name": "iphone",
+     *              "description" : "iphone",
+     *              "origin" : "US",
+     *              "brand" : "Apple",
+     *              "category_id": 9,
+     *              "price": 1000000,
+     *              "promotion_price": 999000,
+     *              "quantity_in_stock" : 10
+     *  }
+     * });
+     * console.log(response);
+     * } catch (error) {
+     * console.error(error);
+     * }
+     * @apiExample PHP
+     * <?php
+     * //Sử dụng pecl_http
+     * $client = new http\Client;
+     * $request = new http\Client\Request;
+     * $request->setRequestUrl('https://qhshop.xyz/api/product/edit');
+     * $request->setRequestMethod('PUT');
+     * $body = new http\Message\Body;
+     * $body->append('{
+     *              "id": 22,
+     *              "images": [...],
+     *              "name": "iphone",
+     *              "description" : "iphone",
+     *              "origin" : "US",
+     *              "brand" : "Apple",
+     *              "category_id": 9,
+     *              "price": 1000000,
+     *              "promotion_price": 999000,
+     *              "quantity_in_stock" : 10
+     * }');
+     * $request->setBody($body);
+     * $request->setOptions(array());
+     * $request->setHeaders(array(
+     * 'Content-Type' => 'application/json',
+     * 'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     * ));
+     * $client->enqueue($request)->send();
+     * $response = $client->getResponse();
+     * echo $response->getBody();
+     * @apiExample Python:
+     * import http.client
+     * import mimetypes
+     * conn = http.client.HTTPSConnection("https://qhshop.xyz")
+     * payload = {
+     *              "id": 22,
+     *              "images": [...],
+     *              "name": "iphone",
+     *              "description" : "iphone",
+     *              "origin" : "US",
+     *              "brand" : "Apple",
+     *              "category_id": 9,
+     *              "price": 1000000,
+     *              "promotion_price": 999000,
+     *              "quantity_in_stock" : 10,
+     * }
+     * headers = {
+     *  'Content-type': 'application/json',
+     *  'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     *}
+     * conn.request("PUT", "/api/product/edit", payload, headers);
+     * res = conn.getresponse()
+     * data = res.read()
+     * print(data.decode("utf-8"))
+     *
+     * @apiSuccessExample Success-Response
+     * HTTP/1.1 200 OK
+     * {
+     *      "success": true,
+     *      "message": "Tạo mới sản phẩm thành công"
+     * }
+     * @apiErrorExample  Error-Response
+     *
+     *HTTP/1.1 401 Unauthorized
+     *{
+     *"success": false,
+     *"message": "Unauthenticated."
+     *}
+     * 
+     * *
+     *HTTP/1.1 401 Unauthorized
+     *{
+     *"success": false,
+     *"message": "Tài khoản không có quyền thực hiện hành động này."
+     *}
+     *
+     *HTTP/1.1 400 Bad Request
+     *{
+     *"success": false,
+     *"message": [...]
+     *}
+     *
+     *HTTP/1.1 404 Not Found
+     *{
+     *"success": false,
+     *"message": "Không tìm thấy sản phẩm"
+     *}
+     * 
+     * HTTP/1.1 500 Internal Server Error
+     *{
+     * "success": false,
+     * "message": "Có lỗi xảy ra. Vui lòng thử lại sau!"
+     *}
+     */
     public function postEdit(Request $request)
     {
         // dd($request);
@@ -418,7 +849,7 @@ class ApiProductController extends Controller
         return response(['success' => true, 'message' => 'Sửa sản phẩm thành công']);
         // DB::beginTransaction();
         // try {
-            
+
         // } catch (\Throwable $th) {
         //     dd($th);
         //     DB::rollBack();
@@ -435,6 +866,7 @@ class ApiProductController extends Controller
      * @apiName Xóa sản phẩm
      * @apiGroup Product
      *
+     * @apiParam (Body) {int} id Id sản phẩm cần xóa (bắt buộc)
      * @apiHeader {String} Content-Type application/json
      * @apiHeader {String} Authorization Bearer Token
      * @apiSampleRequest https://qhshop.xyz/api/product/delete
@@ -515,7 +947,7 @@ class ApiProductController extends Controller
      *"message": "Unauthenticated."
      *}
      * 
-     * *
+     *
      *HTTP/1.1 401 Unauthorized
      *{
      *"success": false,

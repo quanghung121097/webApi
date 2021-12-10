@@ -1,5 +1,5 @@
 define({
-  "name": "Hệ thống API QHShop",
+  "name": "Nguyễn Văn Quang Hưng - AT130825",
   "version": "1.0.0",
   "description": "",
   "defaultVersion": "1.0.0",
@@ -7,7 +7,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-12-10T09:10:45.845Z",
+    "time": "2021-12-10T16:41:57.358Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }

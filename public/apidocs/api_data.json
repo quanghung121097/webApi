@@ -595,6 +595,417 @@
     "groupTitle": "Authentication"
   },
   {
+    "type": "POST",
+    "url": "/api/product/add",
+    "title": "Thêm mới sản phẩm",
+    "name": "Add",
+    "group": "Product",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://qhshop.xyz/api/product/add"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Body": [
+          {
+            "group": "Body",
+            "type": "Array",
+            "optional": false,
+            "field": "images",
+            "description": "<p>Ảnh sản phẩm (base64) (bắt buộc)</p>"
+          },
+          {
+            "group": "Body",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Tên sản phẩm.</p>"
+          },
+          {
+            "group": "Body",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Mô tả sản phẩm (bắt buộc).</p>"
+          },
+          {
+            "group": "Body",
+            "type": "String",
+            "optional": false,
+            "field": "origin",
+            "description": "<p>Xuất xứ (bắt buộc).</p>"
+          },
+          {
+            "group": "Body",
+            "type": "String",
+            "optional": false,
+            "field": "brand",
+            "description": "<p>Thương hiệu.</p>"
+          },
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>id danh mục (bắt buộc).</p>"
+          },
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Giá bán (bắt buộc).</p>"
+          },
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "promotion_price",
+            "description": "<p>Giá khuyến mại (nhỏ hơn giá bán)</p>"
+          },
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "quantity_in_stock",
+            "description": "<p>Số lượng trong kho(bắt buộc).</p>"
+          }
+        ]
+      }
+    },
+    "body": [
+      {
+        "group": "Body",
+        "type": "Array",
+        "optional": true,
+        "field": "images",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "name",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "description",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "origin",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "brand",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": true,
+        "field": "category_id",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": true,
+        "field": "price",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": true,
+        "field": "promotion_price",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": true,
+        "field": "quantity_in_stock",
+        "description": ""
+      }
+    ],
+    "examples": [
+      {
+        "title": "Curl",
+        "content": "curl --location --request POST \"https://qhshop.xyz/api/product/add\" \\\n    -H  'Content-Type: application/json' \\\n    -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY' \\\n    -d '{\n            \"images\": [...],\n            \"name\": \"iphone\",\n            \"description\" : \"iphone\",\n            \"origin\" : \"US\",\n            \"brand\" : \"Apple\",\n            \"category_id\": 9,\n            \"price\": 1000000,\n            \"promotion_price\": 999000,\n            \"quantity_in_stock\" : 10\n\n     }'",
+        "type": "json"
+      },
+      {
+        "title": "Node.js",
+        "content": "const axios = require('axios');\ntry {\nconst response = await axios({\n  method: 'POST',\n  url: 'https://qhshop.xyz/api/product/add',\n  headers: {\n     'Content-Type': 'application/json',\n     'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n  },\n  data: {\n             \"images\": [...],\n             \"name\": \"iphone\",\n             \"description\" : \"iphone\",\n             \"origin\" : \"US\",\n             \"brand\" : \"Apple\",\n             \"category_id\": 9,\n             \"price\": 1000000,\n             \"promotion_price\": 999000,\n             \"quantity_in_stock\" : 10\n }\n});\nconsole.log(response);\n} catch (error) {\nconsole.error(error);\n}",
+        "type": "json"
+      },
+      {
+        "title": "PHP",
+        "content": "<?php\n//Sử dụng pecl_http\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n$request->setRequestUrl('https://qhshop.xyz/api/product/add');\n$request->setRequestMethod('POST');\n$body = new http\\Message\\Body;\n$body->append('{\n             \"images\": [...],\n             \"name\": \"iphone\",\n             \"description\" : \"iphone\",\n             \"origin\" : \"US\",\n             \"brand\" : \"Apple\",\n             \"category_id\": 9,\n             \"price\": 1000000,\n             \"promotion_price\": 999000,\n             \"quantity_in_stock\" : 10\n}');\n$request->setBody($body);\n$request->setOptions(array());\n$request->setHeaders(array(\n'Content-Type' => 'application/json',\n'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n));\n$client->enqueue($request)->send();\n$response = $client->getResponse();\necho $response->getBody();",
+        "type": "json"
+      },
+      {
+        "title": "Python:",
+        "content": "import http.client\nimport mimetypes\nconn = http.client.HTTPSConnection(\"https://qhshop.xyz\")\npayload = {\n             \"images\": [...],\n             \"name\": \"iphone\",\n             \"description\" : \"iphone\",\n             \"origin\" : \"US\",\n             \"brand\" : \"Apple\",\n             \"category_id\": 9,\n             \"price\": 1000000,\n             \"promotion_price\": 999000,\n             \"quantity_in_stock\" : 10,\n}\nheaders = {\n 'Content-type': 'application/json',\n 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n}\nconn.request(\"POST\", \"/api/product/add\", payload, headers);\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n     \"success\": true,\n     \"message\": \"Tạo mới sản phẩm thành công\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response",
+          "content": "\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Unauthenticated.\"\n}\n\n*\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Tài khoản không có quyền thực hiện hành động này.\"\n}\n\nHTTP/1.1 400 Bad Request\n{\n\"success\": false,\n\"message\": [...]\n}\n\nHTTP/1.1 500 Internal Server Error\n{\n\"success\": false,\n\"message\": \"Có lỗi xảy ra. Vui lòng thử lại sau!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/Api/ApiProductController.php",
+    "groupTitle": "Product"
+  },
+  {
+    "type": "PUT",
+    "url": "/api/product/edit",
+    "title": "Sửa mới sản phẩm",
+    "name": "Edit",
+    "group": "Product",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://qhshop.xyz/api/product/edit"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Body": [
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id sản phẩm cần sửa (bắt buộc)</p>"
+          },
+          {
+            "group": "Body",
+            "type": "Array",
+            "optional": false,
+            "field": "images",
+            "description": "<p>Ảnh sản phẩm (base64) (bắt buộc)</p>"
+          },
+          {
+            "group": "Body",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Tên sản phẩm.</p>"
+          },
+          {
+            "group": "Body",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Mô tả sản phẩm (bắt buộc).</p>"
+          },
+          {
+            "group": "Body",
+            "type": "String",
+            "optional": false,
+            "field": "origin",
+            "description": "<p>Xuất xứ (bắt buộc).</p>"
+          },
+          {
+            "group": "Body",
+            "type": "String",
+            "optional": false,
+            "field": "brand",
+            "description": "<p>Thương hiệu.</p>"
+          },
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "category_id",
+            "description": "<p>Id danh mục (bắt buộc).</p>"
+          },
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Giá bán (bắt buộc).</p>"
+          },
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "promotion_price",
+            "description": "<p>Giá khuyến mại (nhỏ hơn giá bán)</p>"
+          },
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "quantity_in_stock",
+            "description": "<p>Số lượng trong kho(bắt buộc).</p>"
+          }
+        ]
+      }
+    },
+    "body": [
+      {
+        "group": "Body",
+        "type": "Array",
+        "optional": true,
+        "field": "images",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "name",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "description",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "origin",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "brand",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": true,
+        "field": "category_id",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": true,
+        "field": "price",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": true,
+        "field": "promotion_price",
+        "description": ""
+      },
+      {
+        "group": "Body",
+        "type": "Number",
+        "optional": true,
+        "field": "quantity_in_stock",
+        "description": ""
+      }
+    ],
+    "examples": [
+      {
+        "title": "Curl",
+        "content": "curl --location --request PUT \"https://qhshop.xyz/api/product/edit\" \\\n    -H  'Content-Type: application/json' \\\n    -H  'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY' \\\n    -d '{\n            \"id\": 22,\n            \"images\": [...],\n            \"name\": \"iphone\",\n            \"description\" : \"iphone\",\n            \"origin\" : \"US\",\n            \"brand\" : \"Apple\",\n            \"category_id\": 9,\n            \"price\": 1000000,\n            \"promotion_price\": 999000,\n            \"quantity_in_stock\" : 10\n\n     }'",
+        "type": "json"
+      },
+      {
+        "title": "Node.js",
+        "content": "const axios = require('axios');\ntry {\nconst response = await axios({\n  method: 'PUT',\n  url: 'https://qhshop.xyz/api/product/edit',\n  headers: {\n     'Content-Type': 'application/json',\n     'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n  },\n  data: {\n             \"id\": 22,\n             \"images\": [...],\n             \"name\": \"iphone\",\n             \"description\" : \"iphone\",\n             \"origin\" : \"US\",\n             \"brand\" : \"Apple\",\n             \"category_id\": 9,\n             \"price\": 1000000,\n             \"promotion_price\": 999000,\n             \"quantity_in_stock\" : 10\n }\n});\nconsole.log(response);\n} catch (error) {\nconsole.error(error);\n}",
+        "type": "json"
+      },
+      {
+        "title": "PHP",
+        "content": "<?php\n//Sử dụng pecl_http\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n$request->setRequestUrl('https://qhshop.xyz/api/product/edit');\n$request->setRequestMethod('PUT');\n$body = new http\\Message\\Body;\n$body->append('{\n             \"id\": 22,\n             \"images\": [...],\n             \"name\": \"iphone\",\n             \"description\" : \"iphone\",\n             \"origin\" : \"US\",\n             \"brand\" : \"Apple\",\n             \"category_id\": 9,\n             \"price\": 1000000,\n             \"promotion_price\": 999000,\n             \"quantity_in_stock\" : 10\n}');\n$request->setBody($body);\n$request->setOptions(array());\n$request->setHeaders(array(\n'Content-Type' => 'application/json',\n'Authorization' => 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n));\n$client->enqueue($request)->send();\n$response = $client->getResponse();\necho $response->getBody();",
+        "type": "json"
+      },
+      {
+        "title": "Python:",
+        "content": "import http.client\nimport mimetypes\nconn = http.client.HTTPSConnection(\"https://qhshop.xyz\")\npayload = {\n             \"id\": 22,\n             \"images\": [...],\n             \"name\": \"iphone\",\n             \"description\" : \"iphone\",\n             \"origin\" : \"US\",\n             \"brand\" : \"Apple\",\n             \"category_id\": 9,\n             \"price\": 1000000,\n             \"promotion_price\": 999000,\n             \"quantity_in_stock\" : 10,\n}\nheaders = {\n 'Content-type': 'application/json',\n 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'\n}\nconn.request(\"PUT\", \"/api/product/edit\", payload, headers);\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n     \"success\": true,\n     \"message\": \"Tạo mới sản phẩm thành công\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response",
+          "content": "\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Unauthenticated.\"\n}\n\n*\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Tài khoản không có quyền thực hiện hành động này.\"\n}\n\nHTTP/1.1 400 Bad Request\n{\n\"success\": false,\n\"message\": [...]\n}\n\nHTTP/1.1 404 Not Found\n{\n\"success\": false,\n\"message\": \"Không tìm thấy sản phẩm\"\n}\n\nHTTP/1.1 500 Internal Server Error\n{\n\"success\": false,\n\"message\": \"Có lỗi xảy ra. Vui lòng thử lại sau!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/Api/ApiProductController.php",
+    "groupTitle": "Product"
+  },
+  {
     "type": "GET",
     "url": "/api/product/search",
     "title": "Bộ lọc sản phẩm",
@@ -609,20 +1020,6 @@
             "optional": false,
             "field": "Content-Type",
             "description": "<p>application/json</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "username",
-            "description": "<p>quanghung</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>jubcsvd734934556@!JJhka</p>"
           }
         ]
       }
@@ -700,6 +1097,19 @@
     "title": "Xóa sản phẩm",
     "name": "Xóa_sản_phẩm",
     "group": "Product",
+    "parameter": {
+      "fields": {
+        "Body": [
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id sản phẩm cần xóa (bắt buộc)</p>"
+          }
+        ]
+      }
+    },
     "header": {
       "fields": {
         "Header": [
@@ -770,7 +1180,98 @@
       "examples": [
         {
           "title": "Error-Response",
-          "content": "\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Unauthenticated.\"\n}\n\n*\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Tài khoản không có quyền thực hiện hành động này.\"\n}\n\nHTTP/1.1 400 Bad Request\n{\n\"success\": false,\n\"message\": \"Thiếu id sản phẩm\"\n}\n\nHTTP/1.1 404 Not Found\n{\n\"success\": false,\n\"message\": \"Không tìm thấy sản phẩm\"\n}\nHTTP/1.1 500 Internal Server Error\n{\n\"success\": false,\n\"message\": \"Có lỗi xảy ra. Vui lòng thử lại sau!\"\n}",
+          "content": "\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Unauthenticated.\"\n}\n\n\nHTTP/1.1 401 Unauthorized\n{\n\"success\": false,\n\"message\": \"Tài khoản không có quyền thực hiện hành động này.\"\n}\n\nHTTP/1.1 400 Bad Request\n{\n\"success\": false,\n\"message\": \"Thiếu id sản phẩm\"\n}\n\nHTTP/1.1 404 Not Found\n{\n\"success\": false,\n\"message\": \"Không tìm thấy sản phẩm\"\n}\nHTTP/1.1 500 Internal Server Error\n{\n\"success\": false,\n\"message\": \"Có lỗi xảy ra. Vui lòng thử lại sau!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "1.0.0",
+    "filename": "app/Http/Controllers/Api/ApiProductController.php",
+    "groupTitle": "Product"
+  },
+  {
+    "type": "GET",
+    "url": "/api/product/detail",
+    "title": "Chi tiết sản phẩm",
+    "name": "detail",
+    "group": "Product",
+    "parameter": {
+      "fields": {
+        "Body": [
+          {
+            "group": "Body",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id sản phẩm cần xem (bắt buộc)</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://qhshop.xyz/api/product/detail"
+      }
+    ],
+    "body": [
+      {
+        "group": "Body",
+        "type": "String",
+        "optional": true,
+        "field": "id",
+        "defaultValue": "6",
+        "description": ""
+      }
+    ],
+    "examples": [
+      {
+        "title": "Curl",
+        "content": "curl --location --request GET \"https://qhshop.xyz/api/product/detail\" \\\n    -H  'Content-Type: application/json' \\\n    -d '{\n            \"id\": 6\n     }'",
+        "type": "json"
+      },
+      {
+        "title": "Node.js",
+        "content": "const axios = require('axios');\ntry {\nconst response = await axios({\n  method: 'GET',\n  url: 'https://qhshop.xyz/api/product/detail',\n  headers: {\n     'Content-Type': 'application/json'\n  },\n  data: {\n            \"id\": 6\n }\n});\nconsole.log(response);\n} catch (error) {\nconsole.error(error);\n}",
+        "type": "json"
+      },
+      {
+        "title": "PHP",
+        "content": "<?php\n//Sử dụng pecl_http\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n$request->setRequestUrl('https://qhshop.xyz/api/product/detail');\n$request->setRequestMethod('GET');\n$body = new http\\Message\\Body;\n$body->append('{\n            \"id\": 6\n}');\n$request->setBody($body);\n$request->setOptions(array());\n$request->setHeaders(array(\n'Content-Type' => 'application/json'\n));\n$client->enqueue($request)->send();\n$response = $client->getResponse();\necho $response->getBody();",
+        "type": "json"
+      },
+      {
+        "title": "Python:",
+        "content": "import http.client\nimport mimetypes\nconn = http.client.HTTPSConnection(\"https://qhshop.xyz\")\npayload = {\n     \"id\": 6\n}\nheaders = {\n 'Content-type': 'application/json'\n}\nconn.request(\"GET\", \"/api/product/detail\", payload, headers);\nres = conn.getresponse()\ndata = res.read()\nprint(data.decode(\"utf-8\"))",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n     \"success\": true,\n     \"data\": {\n       \"product_detail\": {\n           \"id\": 6,\n           \"category_id\": 12,\n           \"name\": \"Apple Watch Seri 3\",\n           \"brand\": \"Apple\",\n           \"origin\": \"US\",\n           \"price\": 1000000,\n           \"promotion_price\": 0,\n           \"description\": null,\n           \"enabled\": 1,\n           \"quantity_in_stock\": 99,\n           \"views\": 24,\n           \"created_at\": \"2020-11-02T02:58:04.000000Z\",\n           \"updated_at\": \"2021-12-10T16:01:03.000000Z\"\n       },\n       \"listReview\": [\n           {\n               \"id\": 3,\n               \"rate\": 4,\n               \"comment\": \"bthg\",\n               \"reviewed\": 1,\n               \"created_at\": \"2020-11-26T19:18:24.000000Z\",\n           },\n           {\n               \"id\": 8,\n               \"rate\": 4,\n               \"comment\": \"hay hú\",\n               \"reviewed\": 1,\n               \"created_at\": \"2020-11-26T19:22:13.000000Z\",\n               \"updated_at\": \"2020-11-30T07:49:18.000000Z\"\n           }\n      ]\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response",
+          "content": "\nHTTP/1.1 400 Bad Request\n{\n\"success\": false,\n\"message\": \"Thiếu id sản phẩm\"\n}\n\nHTTP/1.1 500 Internal Server Error\n{\n\"success\": false,\n\"data\": \"Có lỗi xảy ra. Vui lòng thử lại sau!\"\n}",
           "type": "json"
         }
       ]
