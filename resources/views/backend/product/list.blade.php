@@ -58,7 +58,7 @@
 				</td>
 				<td>{{ $item->views}}</td>
 				<td>
-					<img style="width: 80px" src="{{asset('images/product/'.$item->images[0]->name)}}">
+					<img style="width: 80px" src="{{asset($item->images[0]->uri)}}">
 				</td>
 				<td class="text-center">				
 					<a href="{{url('/admin-page/product/edit/'.$item->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>

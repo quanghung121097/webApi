@@ -34,16 +34,13 @@ class AuthController extends Controller
 
     /**
      * @api {post} /api/auth/login Đăng nhập tài khoản
-     * @apiName Đăng nhập tài khoản
+     * @apiName login
      * @apiGroup Authentication
      *
      * @apiHeader {String} Content-Type application/json
      *
      * @apiParam (Body) {String} username Tài khoản của người dùng.
      * @apiParam (Body) {String} password Mật khẩu tài khoản người dùng.
-     * @apiSuccess {boolean} success Trạng thái (Thành công hoặc thất bại).
-     * @apiSuccess {string} message Nội dung thông báo (nếu có lỗi thì thông báo lỗi).
-     * @apiSuccess {object} data Dữ liệu trả về.
      * @apiSampleRequest https://qhshop.xyz/api/auth/login
      * @apiBody {String} [username="quanghung1"]
      * @apiBody {String} [password="Quanghung1210"]
@@ -97,10 +94,13 @@ class AuthController extends Controller
      * import http.client
      * import mimetypes
      * conn = http.client.HTTPSConnection("https://qhshop.xyz")
-     * payload = '{
+     * payload = {
      *      "username":"quanghung1",
      *        "password":"Quanghung1210"
-     * }'
+     * }
+     *headers = {
+     *  'Content-type': 'application/json'
+     *}
      * conn.request("POST", "/api/auth/login", payload, headers);
      * res = conn.getresponse()
      * data = res.read()
@@ -192,7 +192,7 @@ class AuthController extends Controller
 
     /**
      * @api {post} /api/auth/register Đăng ký tài khoản (khách hàng)
-     * @apiName Đăng ký tài khoản
+     * @apiName register-custommer
      * @apiGroup Authentication
      *
      * @apiHeader {String} Content-Type application/json
@@ -206,9 +206,6 @@ class AuthController extends Controller
      * @apiParam (Body) {String} full_name Họ và tên (bắt buộc, tối đa 40 ký tự).
      * @apiParam (Body) {String} address Địa chỉ (bắt buộc),
      * @apiParam (Body) {String} dateOfBirth (bắt buộc, định dạng Y-m-d).
-     * @apiSuccess {boolean} success Trạng thái (Thành công hoặc thất bại).
-     * @apiSuccess {string} message Nội dung thông báo (nếu có lỗi thì thông báo lỗi).
-     * @apiSuccess {object} data Dữ liệu trả về.
      * @apiSampleRequest https://qhshop.xyz/api/auth/register
      * @apiBody {String} [username="quanghung4"]
      * @apiBody {String} [password="Quanghung1210"]
@@ -290,7 +287,7 @@ class AuthController extends Controller
      * import http.client
      * import mimetypes
      * conn = http.client.HTTPSConnection("https://qhshop.xyz")
-     * payload = '{
+     * payload = {
      *             "username": "quanghung4",
      *             "password": "Quanghung1210",
      *             "confirm_password": "Quanghung1210",
@@ -300,7 +297,10 @@ class AuthController extends Controller
      *             "dateOfBirth": "1997-10-12",
      *             "phone" : "0788337682",
      *             "email" : "quanghung121097@gmail.com"
-     * }'
+     * }
+     * headers = {
+     *  'Content-type': 'application/json'
+     *}
      * conn.request("POST", "/api/auth/register", payload, headers);
      * res = conn.getresponse()
      * data = res.read()
@@ -431,13 +431,11 @@ class AuthController extends Controller
 
     /**
      * @api {post} /api/auth/logout Đăng xuất tài khoản
-     * @apiName Đăng xuất tài khoản
+     * @apiName logout
      * @apiGroup Authentication
      *
      * @apiHeader {String} Content-Type application/json
      * @apiHeader {String} Authorization Bearer Token
-     * @apiSuccess {boolean} success Trạng thái (Thành công hoặc thất bại).
-     * @apiSuccess {string} message Nội dung thông báo (nếu có lỗi thì thông báo lỗi).
      * @apiSampleRequest https://qhshop.xyz/api/auth/logout
      * @apiExample Curl
      *  curl --location --request POST "https://qhshop.xyz/api/auth/logout" \
@@ -481,7 +479,11 @@ class AuthController extends Controller
      * import http.client
      * import mimetypes
      * conn = http.client.HTTPSConnection("https://qhshop.xyz")
-     * payload = '{}'
+     * payload = {}
+     * headers = {
+     *  'Content-type': 'application/json',
+     *  'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     *}
      * conn.request("POST", "/api/auth/logout", payload, headers);
      * res = conn.getresponse()
      * data = res.read()
@@ -527,14 +529,11 @@ class AuthController extends Controller
 
     /**
      * @api {get} /api/auth/user-profile Lấy thông tin user đăng nhập
-     * @apiName Lấy thông tin user đăng nhập
+     * @apiName user-profile
      * @apiGroup Authentication
      *
      * @apiHeader {String} Content-Type application/json
      * @apiHeader {String} Authorization Bearer Token
-     * @apiSuccess {boolean} success Trạng thái (Thành công hoặc thất bại).
-     * @apiSuccess {string} message Nội dung thông báo (nếu có lỗi thì thông báo lỗi).
-     * @apiSuccess {object} data Dữ liệu trả về.
      * @apiSampleRequest https://qhshop.xyz/api/auth/user-profile
      * @apiExample Curl
      *  curl --location --request GET "https://qhshop.xyz/api/auth/user-profile" \
@@ -578,7 +577,11 @@ class AuthController extends Controller
      * import http.client
      * import mimetypes
      * conn = http.client.HTTPSConnection("https://qhshop.xyz")
-     * payload = '{}'
+     * payload = {}
+     * headers = {
+     *  'Content-type': 'application/json',
+     *  'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     *}
      * conn.request("GET", "/api/auth/user-profile", payload, headers);
      * res = conn.getresponse()
      * data = res.read()
@@ -636,16 +639,13 @@ class AuthController extends Controller
 
     /**
      * @api {post} /api/auth/change-password Đổi mật khẩu user
-     * @apiName Đổi mật khẩu user
+     * @apiName change-password
      * @apiGroup Authentication
-     *
      * @apiHeader {String} Content-Type application/json
      * @apiHeader {String} Authorization Bearer Token
      * @apiParam (Body) {String} old_password Mật khẩu cũ (bắt buộc).
      * @apiParam (Body) {String} new_password Mật khẩu mới (ít nhất 8 ký tự, gồm 1 ký tự viết hoa, 1 ký tự viết thường, 1 số).
      * @apiParam (Body) {String} new_password_confirmation Xác nhận lại mật khẩu đăng ký (bắt buộc).
-     * @apiSuccess {boolean} success Trạng thái (Thành công hoặc thất bại).
-     * @apiSuccess {string} message Nội dung thông báo (nếu có lỗi thì thông báo lỗi).
      * @apiSampleRequest https://qhshop.xyz/api/auth/change-password
      * @apiBody {String} [old_password="Quanghung1210"]
      * @apiBody {String} [new_password="Quanghung121097"]
@@ -706,11 +706,15 @@ class AuthController extends Controller
      * import http.client
      * import mimetypes
      * conn = http.client.HTTPSConnection("https://qhshop.xyz")
-     * payload = '{
+     * payload = {
      *             "old_password": "Quanghung1210",
      *             "new_password": "Quanghung121097",
      *             "new_password_confirmation": "Quanghung121097"
-     * }'
+     * }
+     * headers = {
+     *  'Content-type': 'application/json',
+     *  'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYzODk4MDU4OSwiZXhwIjoxNjM4OTg0MTg5LCJuYmYiOjE2Mzg5ODA1ODksImp0aSI6IldJQTdkMEw0cmsxSjN4SkgiLCJzdWIiOjE4LCJwcnYiOiJjOGVlMWZjODllNzc1ZWM0YzczODY2N2U1YmUxN2E1OTBiNmQ0MGZjIn0.thk05uHVDUdbVOBZm0qy9bJWy0UL4JbNkO5lAz1LiuY'
+     *}
      * conn.request("POST", "/api/auth/change-password", payload, headers);
      * res = conn.getresponse()
      * data = res.read()

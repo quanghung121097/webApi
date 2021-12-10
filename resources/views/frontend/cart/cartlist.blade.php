@@ -19,7 +19,7 @@
 					<tbody>
 						@foreach($cart->getListCartItem() as $cartItem)
 						<tr>
-							<td class="d-none d-md-block" style="text-align: center;"><img src="{{asset('images/product/'.$cartItem->getProduct()->images[0]->name)}}" style="width: 100px"></td>
+							<td class="d-none d-md-block" style="text-align: center;"><img src="{{asset($cartItem->getProduct()->images[0]->uri)}}" style="width: 100px"></td>
 							<td><a href="{{url('/product/detail/'.$cartItem->getProduct()->id)}}">{{$cartItem->getProduct()->name}}</a></td>
 							<td>{{number_format(($cartItem->getProduct()->promotion_price!=0)?$cartItem->getProduct()->promotion_price:$cartItem->getProduct()->price)}}đ</td>
 							<td>

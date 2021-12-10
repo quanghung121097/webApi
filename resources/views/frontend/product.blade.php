@@ -41,7 +41,7 @@
 					<!-- sản phẩm -->
 					<div class="card mb-4">
 						<div class="card-img-top embed-responsive embed-responsive-1by1">
-					  		<img src="{{asset('images/product/'.$item->images[0]->name)}}" alt="ảnh{{ $item->name}}" class="embed-responsive-item">
+					  		<img src="{{asset($item->images[0]->uri)}}" alt="ảnh{{ $item->name}}" class="embed-responsive-item">
 					  		<div class="button-product">
 							    <div><a href="{{url('/product/detail/'.$item->id)}}" class="btn btn-light text-danger"><i class="fas fa-info-circle"></i> Chi tiết</a></div>
 							   	@if($item->quantity_in_stock>0) 

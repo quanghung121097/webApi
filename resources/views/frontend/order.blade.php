@@ -20,7 +20,7 @@
 						<tbody>
 							@foreach($cart->getListCartItem() as $cartItem)
 							<tr>
-								<td><img src="{{asset('images/product/'.$cartItem->getProduct()->images[0]->name)}}" style="width: 100px"></td>
+								<td><img src="{{asset($cartItem->getProduct()->images[0]->uri)}}" style="width: 100px"></td>
 								<td>
 									<h6><a href="{{url('/product/detail/'.$cartItem->getProduct()->id)}}">{{$cartItem->getProduct()->name}}</a></h6>
 									<span>{{number_format(($cartItem->getProduct()->promotion_price!=0)?$cartItem->getProduct()->promotion_price:$cartItem->getProduct()->price)}}đ x {{$cartItem->getQuantity()}}</span>

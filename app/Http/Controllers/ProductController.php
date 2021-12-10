@@ -152,8 +152,8 @@ class ProductController extends Controller
             #xóa ảnh cũ
             $oldImages = Image::where('product_id',$id)->get();
             foreach ($oldImages as $oldImage ) {
-                if(file_exists('images/product/'.$oldImage->name)) 
-                    unlink('images/product/'.$oldImage->name);
+                if(file_exists($oldImage->uri)) 
+                    unlink($oldImage->uri);
             }
             Image::where('product_id',$id)->delete();
             #thêm ảnh mới
@@ -174,8 +174,8 @@ class ProductController extends Controller
     public function getDelete($id){
         $oldImages = Image::where('product_id',$id)->get();
         foreach ($oldImages as $oldImage ) {
-            if(file_exists('images/product/'.$oldImage->name)) 
-                unlink('images/product/'.$oldImage->name);
+            if(file_exists($oldImage->uri)) 
+                unlink($oldImage->uri);
         }
         Product::destroy($id);
         return redirect(url('/admin-page/product/list'))->with(['typeMsg'=>'success','msg'=>'Xóa thành công']);

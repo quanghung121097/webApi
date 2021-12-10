@@ -115,7 +115,7 @@
 				<tbody>
 					@foreach($order->order_items as $item)
 					<tr>
-						<td style="text-align: center;"><img src="{{asset('images/product/'.$item->product->images[0]->name)}}" style="width: 70px"></td>
+						<td style="text-align: center;"><img src="{{asset($item->product->images[0]->uri)}}" style="width: 70px"></td>
 						<td>
 							<a href="{{url('/product/detail/'.$item->product->id)}}">{{$item->product->name}}</a>
 							<p>{{number_format($item->price_sell)}}đ x {{$item->quantity}}</p>
