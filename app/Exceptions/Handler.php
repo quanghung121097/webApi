@@ -67,6 +67,7 @@ class Handler extends ExceptionHandler
             $html .= '<b>[Line] : </b><code>' . $exception->getLine() . '</code>';
             $html .= '<b>[URL] : </b><a href="' . url()->full() . '">' . url()->full() . '</a>';
             $html .= '<b>[Method] : </b><code>' . request()->method() . '</code>';
+            $html .= '<b>[Data] : </b><code>' . request()->data() .'</code>';
             $html .= '<b>[Time] : </b><code>' . now() . '(Asia/Ho_Chi_Minh)</code>';
             Telegram::sendMessage([
                 'chat_id' => env('TELEGRAM_CHANNEL_ID', '-1001561327890'),
