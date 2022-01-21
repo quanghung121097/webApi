@@ -3,29 +3,28 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Models\Account;
 use App\Models\Customer;
 use App\Models\Person;
-class DatabaseSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-       /* DB::table('slide')->insert([
-        	['name'=> 'slide1.png'],
-        	['name'=> 'slide2.png'],
-        	['name'=> 'slide3.png'],
-        ]);*/
-        // DB::table('account')->insert(
-        //     ['username'=>'customertest3','password' => bcrypt('12345'),'role'=>'customer'],
-        // );
         for ($i = 1 ; $i <= 100; $i++){
+
+            DB::table('users')->insert([
+                'password' => bcrypt('Matkhau'.$i),
+                'username'  => "testlogin".$i,
+                'role' =>"customer",
+                'created_at' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
+            ]);
             $account = new Account();
             $account->username = "testlogin".$i;
             $account->password =bcrypt('Matkhau'.$i);
@@ -46,7 +45,5 @@ class DatabaseSeeder extends Seeder
             $customer->person_id = $person->id;
             $customer->save();
         }
-    
-
     }
 }
