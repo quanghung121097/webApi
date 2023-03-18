@@ -17,10 +17,11 @@ class CreateCustomerTable extends Migration
             $table->increments('id');
             #nguoi
             $table->unsignedInteger('person_id');
-            $table->foreign('person_id')->references('id')->on('person');
+            $table->foreign('person_id')->references('id')->on('person')->onDelete('cascade');
             #loại khách : thường , thân thiết , ...
-            $table->string('type')->default('Thường');
+            $table->tinyInteger('type')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

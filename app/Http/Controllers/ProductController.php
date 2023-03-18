@@ -6,10 +6,17 @@ use App\Models\Category;
 use App\Models\OrderItem;
 use App\Models\Image;
 use App\Models\Review;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use DB;
 class ProductController extends Controller
 {
+    private $imageService;
+
+    public function __construct(ImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
     //frontend
     public function getListProduct(Request $request){
         $query = Product::select('*',DB::raw('IF(promotion_price>0,promotion_price,price) as price_sell'));
@@ -79,17 +86,18 @@ class ProductController extends Controller
     	return view('backend.product.add_edit',['listCategory'=>$listCategory]);
     }
     public function postAdd(Request $request){
+        
         $request->validate([
             'stringDescription' => 'max:2000',
             'intPromotion_price' => 'lt:intPrice',
-            'images' => 'mimes:jpeg,jpg,png'
+            'images' => 'required',
+            'images.*' => 'mimes:jpeg,png,jpg|max:2048'
         ],
         [
             'max' => 'Trường trên tối đa :max ký tự',
             'lt' => 'Giá ưu đãi phải nhỏ hơn giá thường',
             'mimes' => 'Ảnh định dạng jpeg,jpg,png'
         ]);
-
     	$product = new Product;
     	$product->category_id = $request->intCategory_id;
     	$product->name = $request->stringName;
@@ -107,11 +115,13 @@ class ProductController extends Controller
     	$images = $request->file('images');
     	foreach ($images as $index => $image ) {
     		# code...
-    		$imageName = time().'ProductId'.$product->id.'ImageId'.$index.'.png';
-    		$image->move('images/product',$imageName);
+            $imageName = $this->imageService->saveImgBase64($image);
+    		// $imageName = time().'ProductId'.$product->id.'ImageId'.$index.'.png';
+    		// $image->move('images/product',$imageName);
 
     		$dbImage = new Image;
     		$dbImage->name = $imageName;
+            $dbImage->uri = "storage/uploads/products/" . $imageName;
     		$dbImage->product_id = $product->id;
     		$dbImage->save();
     	}
@@ -135,7 +145,6 @@ class ProductController extends Controller
             'lt' => 'Giá ưu đãi phải nhỏ hơn giá thường',
             'mimes' => 'Ảnh định dạng jpeg,jpg,png'
         ]);
-    	$listCategory = Category::all();
         $product = Product::find($id);
         $product->name = $request->stringName;
         $product->brand = $request->stringBrand;
@@ -160,11 +169,12 @@ class ProductController extends Controller
             $images = $request->file('images');
             foreach ($images as $index => $image ) {
                 # code...
-                $imageName = time().'ProductId'.$product->id.'ImageId'.$index.'.png';
-                $image->move('images/product',$imageName);
-
+                // $imageName = time().'ProductId'.$product->id.'ImageId'.$index.'.png';
+                // $image->move('images/product',$imageName);
+                $imageName = $this->imageService->saveImgBase64($image);
                 $dbImage = new Image;
                 $dbImage->name = $imageName;
+                $dbImage->uri = "storage/uploads/products/" . $imageName;
                 $dbImage->product_id = $product->id;
                 $dbImage->save();
             }

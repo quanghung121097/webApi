@@ -17,7 +17,7 @@ class CreateCustomerShippingAddressTable extends Migration
             $table->increments('id');
             # 1 khách có nhiều địa chỉ
             $table->unsignedInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customer');
+            $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
             $table->string('recipient_name');
             $table->string('recipient_phone');
             $table->string('province');
@@ -26,6 +26,7 @@ class CreateCustomerShippingAddressTable extends Migration
             $table->string('address_detail');
             $table->tinyInteger('default')->default(0);#mặc định 0 hay 1
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

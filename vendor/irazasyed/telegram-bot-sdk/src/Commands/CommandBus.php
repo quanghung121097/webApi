@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Telegram\Bot\Answers\AnswerBus;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
+use Telegram\Bot\Objects\MessageEntity;
 use Telegram\Bot\Objects\Update;
 use Telegram\Bot\Traits\Singleton;
 
@@ -19,12 +20,12 @@ class CommandBus extends AnswerBus
     use Singleton;
 
     /**
-     * @var Command[] Holds all commands.
+     * @var array<string, Command> Holds all commands. Keys are command names (without leading slashes).
      */
     protected $commands = [];
 
     /**
-     * @var Command[] Holds all commands' aliases.
+     * @var array<string, Command> Holds all commands' aliases. Keys are command names (without leading slashes).
      */
     protected $commandAliases = [];
 
@@ -41,7 +42,7 @@ class CommandBus extends AnswerBus
     /**
      * Returns the list of commands.
      *
-     * @return array
+     * @return array<string, Command>
      */
     public function getCommands(): array
     {
@@ -51,7 +52,7 @@ class CommandBus extends AnswerBus
     /**
      * Add a list of commands.
      *
-     * @param array $commands
+     * @param list<CommandInterface|class-string<CommandInterface>> $commands
      *
      * @throws TelegramSDKException
      * @return CommandBus
@@ -68,7 +69,7 @@ class CommandBus extends AnswerBus
     /**
      * Add a command to the commands list.
      *
-     * @param CommandInterface|string $command Either an object or full path to the command class.
+     * @param CommandInterface|class-string<CommandInterface> $command Either an object or fully qualified class name (FQCN) of the command class.
      *
      * @throws TelegramSDKException
      *
@@ -103,7 +104,7 @@ class CommandBus extends AnswerBus
     /**
      * Remove a command from the list.
      *
-     * @param $name
+     * @param string $name Command's name without leading slash
      *
      * @return CommandBus
      */
@@ -117,7 +118,7 @@ class CommandBus extends AnswerBus
     /**
      * Removes a list of commands.
      *
-     * @param array $names
+     * @param list<string> $names Command names
      *
      * @return CommandBus
      */
@@ -133,11 +134,11 @@ class CommandBus extends AnswerBus
     /**
      * Parse a Command for a Match.
      *
-     * @param $text
-     * @param $offset
-     * @param $length
+     * @param string $text Command name with a leading slash
+     * @param int $offset
+     * @param int $length
      *
-     * @return string
+     * @return string Telegram command name (without leading slash)
      */
     public function parseCommand($text, $offset, $length): string
     {
@@ -145,6 +146,7 @@ class CommandBus extends AnswerBus
             throw new InvalidArgumentException('Message is empty, Cannot parse for command');
         }
 
+        // remove leading slash
         $command = substr(
             $text,
             $offset + 1,
@@ -163,7 +165,7 @@ class CommandBus extends AnswerBus
     /**
      * Handles Inbound Messages and Executes Appropriate Command.
      *
-     * @param $update
+     * @param Update $update
      *
      * @return Update
      */
@@ -173,8 +175,11 @@ class CommandBus extends AnswerBus
 
         if ($message->has('entities')) {
             $this->parseCommandsIn($message)
-                ->each(function (array $botCommand) use ($update) {
-                    $this->process($botCommand, $update);
+                ->each(function ($botCommandEntity) use ($update) {
+                    $botCommandAsArray = $botCommandEntity instanceof MessageEntity
+                        ? $botCommandEntity->all()
+                        : $botCommandEntity;
+                    $this->process($botCommandAsArray, $update);
                 });
         }
 
@@ -184,22 +189,22 @@ class CommandBus extends AnswerBus
     /**
      * Returns all bot_commands detected in the update.
      *
-     * @param $message
+     * @param \Telegram\Bot\Objects\Message|Collection $message
      *
-     * @return Collection
+     * @return Collection<int, MessageEntity>
      */
     protected function parseCommandsIn(Collection $message): Collection
     {
-        return collect($message->get('entities'))
-            ->filter(function ($entity) {
-                return $entity['type'] === 'bot_command';
+        return Collection::wrap($message->get('entities'))
+            ->filter(function (MessageEntity $entity) {
+                return $entity->type === 'bot_command';
             });
     }
 
     /**
      * Execute a bot command from the update text.
      *
-     * @param array  $entity
+     * @param array<string, mixed> $entity {@see \Telegram\Bot\Objects\MessageEntity} object attributes.
      * @param Update $update
      */
     protected function process($entity, Update $update)
@@ -216,9 +221,9 @@ class CommandBus extends AnswerBus
     /**
      * Execute the command.
      *
-     * @param string $name
+     * @param string $name Telegram command name without leading slash
      * @param Update $update
-     * @param array  $entity
+     * @param array<string, mixed> $entity
      *
      * @return mixed
      */
@@ -235,31 +240,43 @@ class CommandBus extends AnswerBus
     }
 
     /**
-     * @param $command
+     * @param CommandInterface|class-string<CommandInterface> $command
      *
-     * @return object
+     * @return CommandInterface
      * @throws TelegramSDKException
      */
-    private function resolveCommand($command)
+    private function resolveCommand($command): CommandInterface
     {
-        $command = $this->makeCommandObj($command);
-
-        if (! ($command instanceof CommandInterface)) {
+        if (! is_a($command, CommandInterface::class, true)) {
             throw new TelegramSDKException(
                 sprintf(
-                    'Command class "%s" should be an instance of "Telegram\Bot\Commands\CommandInterface"',
-                    get_class($command)
+                    'Command class "%s" should be an instance of "%s"',
+                    is_object($command) ? get_class($command) : $command,
+                    CommandInterface::class
                 )
             );
         }
 
-        return $command;
+        if (is_object($command)) {
+            $commandInstance = $command;
+        } else {
+            $commandInstance = $this->telegram->hasContainer()
+                ? $this->buildDependencyInjectedAnswer($command)
+                : new $command();
+        }
+
+        if ($commandInstance instanceof Command && $this->telegram) {
+            $commandInstance->setTelegram($this->getTelegram());
+        }
+
+        return $commandInstance;
     }
 
     /**
-     * @param $command
-     * @param $alias
+     * @param CommandInterface $command
+     * @param string $alias
      *
+     * @return void
      * @throws TelegramSDKException
      */
     private function checkForConflicts($command, $alias)
@@ -268,7 +285,8 @@ class CommandBus extends AnswerBus
             throw new TelegramSDKException(
                 sprintf(
                     '[Error] Alias [%s] conflicts with command name of "%s" try with another name or remove this alias from the list.',
-                    $alias, get_class($command)
+                    $alias,
+                    get_class($command)
                 )
             );
         }
@@ -282,32 +300,5 @@ class CommandBus extends AnswerBus
                 )
             );
         }
-    }
-
-    /**
-     * @param $command
-     *
-     * @return object
-     * @throws TelegramSDKException
-     */
-    private function makeCommandObj($command)
-    {
-        if (is_object($command)) {
-            return $command;
-        }
-        if (! class_exists($command)) {
-            throw new TelegramSDKException(
-                sprintf(
-                    'Command class "%s" not found! Please make sure the class exists.',
-                    $command
-                )
-            );
-        }
-
-        if ($this->telegram->hasContainer()) {
-            return $this->buildDependencyInjectedAnswer($command);
-        }
-
-        return new $command();
     }
 }

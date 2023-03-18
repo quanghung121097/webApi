@@ -17,10 +17,11 @@ class CreateAdminTable extends Migration
             $table->increments('id');
             #người
             $table->unsignedInteger('person_id');
-            $table->foreign('person_id')->references('id')->on('person');
+            $table->foreign('person_id')->references('id')->on('person')->onDelete('cascade');
             #căn cước
             $table->string('identity');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -4,9 +4,11 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
+	use SoftDeletes;
 	protected $table = 'customer';
 	public function person(){
 		return $this->belongsTo(Person::class);

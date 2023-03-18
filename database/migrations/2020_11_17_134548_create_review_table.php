@@ -19,6 +19,7 @@ class CreateReviewTable extends Migration
             $table->string('comment')->nullable();;
             $table->tinyInteger('reviewed')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -2,17 +2,18 @@
 
 namespace Telegram\Bot\Laravel;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Foundation\Application as LaravelApplication;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 use Telegram\Bot\Api;
 use Telegram\Bot\BotsManager;
-use Illuminate\Support\ServiceProvider;
 use Telegram\Bot\Laravel\Artisan\WebhookCommand;
-use Laravel\Lumen\Application as LumenApplication;
-use Illuminate\Foundation\Application as LaravelApplication;
 
 /**
  * Class TelegramServiceProvider.
  */
-class TelegramServiceProvider extends ServiceProvider
+class TelegramServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register the service provider.
@@ -32,7 +33,7 @@ class TelegramServiceProvider extends ServiceProvider
      */
     protected function configure()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/telegram.php', 'telegram');
+        $this->mergeConfigFrom(__DIR__ . '/config/telegram.php', 'telegram');
     }
 
     /**
@@ -42,7 +43,7 @@ class TelegramServiceProvider extends ServiceProvider
     {
         if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/config/telegram.php' => config_path('telegram.php'),
+                __DIR__ . '/config/telegram.php' => config_path('telegram.php'),
             ], 'telegram-config');
         } elseif ($this->app instanceof LumenApplication) {
             $this->app->configure('telegram');
@@ -54,7 +55,7 @@ class TelegramServiceProvider extends ServiceProvider
      */
     protected function registerBindings()
     {
-        $this->app->bind(BotsManager::class, static function ($app) {
+        $this->app->singleton(BotsManager::class, static function ($app) {
             return (new BotsManager(config('telegram')))->setContainer($app);
         });
         $this->app->alias(BotsManager::class, 'telegram');

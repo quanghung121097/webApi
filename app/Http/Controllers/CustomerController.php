@@ -115,21 +115,7 @@ class CustomerController extends Controller
     }
     public function postType(Request $request,$id){
     	$customer = Customer::findOrFail($id);
-    	switch ($request->intType) {
-			case 0:
-				$customer->type = 'Thường';
-				break;
-			case 1:
-				# code...
-				$customer->type = 'Thân thiết';
-				break;
-			case 2:
-				$customer->type = 'Vip';
-				break;
-			default:
-				# code...
-				break;
-		}
+		$customer->type = $request->intType;
 		$customer->save();
 		return back()->with(['typeMsg'=>'success','msg'=>'Cập nhật thành công']);
     }

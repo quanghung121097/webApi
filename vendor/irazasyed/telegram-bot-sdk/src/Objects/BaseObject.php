@@ -44,8 +44,8 @@ abstract class BaseObject extends Collection
     /**
      * Magically map to an object class (if exists) and return data.
      *
-     * @param      $property
-     * @param null $default
+     * @param string $property Name of the property or relation.
+     * @param mixed $default Default value or \Closure that returns default value.
      *
      * @return mixed
      */
@@ -60,11 +60,11 @@ abstract class BaseObject extends Collection
 
         $relations = $this->relations();
         if (isset($relations[$property])) {
-            return $relations[$property]::make($value);
+            return $this->getRelationValue($property, $value);
         }
 
         /** @var BaseObject $class */
-        $class = 'Telegram\Bot\Objects\\'.Str::studly($property);
+        $class = 'Telegram\Bot\Objects\\' . Str::studly($property);
 
         if (class_exists($class)) {
             return $class::make($value);
@@ -75,6 +75,37 @@ abstract class BaseObject extends Collection
         }
 
         return $value;
+    }
+
+    /**
+     * @param string $relationName
+     * @param array  $relationRawData
+     * @return array|\Illuminate\Support\Enumerable|\Illuminate\Support\Traits\EnumeratesValues|\Telegram\Bot\Objects\BaseObject
+     */
+    protected function getRelationValue(string $relationName, iterable $relationRawData)
+    {
+        /** @var class-string<\Telegram\Bot\Objects\BaseObject>|list<class-string<\Telegram\Bot\Objects\BaseObject>> $relation */
+        $relation = $this->relations()[$relationName];
+
+        if (is_string($relation)) {
+            if (! class_exists($relation)) {
+                throw new \InvalidArgumentException("Could not load “{$relationName}” relation: class “{$relation}” not found.");
+            }
+            return $relation::make($relationRawData);
+        }
+
+        $isOneToManyRelation = is_array($relation);
+        if ($isOneToManyRelation) {
+            /** @var class-string<\Telegram\Bot\Objects\BaseObject> $clasString */
+            $clasString = $relation[0];
+            $relatedObjects = Collection::make(); // @todo array type can be used in v4
+            foreach ($relationRawData as $singleObjectRawData) {
+                $relatedObjects[] = $clasString::make($singleObjectRawData);
+            }
+            return $relatedObjects;
+        }
+
+        throw new \InvalidArgumentException("Unknown type of the relationship data for the “{$relationName}” relation.");
     }
 
     /**
@@ -126,6 +157,46 @@ abstract class BaseObject extends Collection
     public function getStatus()
     {
         return data_get($this->items, 'ok', false);
+    }
+
+    /**
+     * Detect type based on fields.
+     *
+     * @return string|null
+     */
+    public function objectType(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Determine if the object is of given type.
+     *
+     * @param string $type
+     *
+     * @return bool
+     */
+    public function isType($type)
+    {
+        if ($this->offsetExists($type)) {
+            return true;
+        }
+
+        return $this->objectType() === $type;
+    }
+
+    /**
+     * Determine the type by given types.
+     *
+     * @param array $types
+     *
+     * @return string|null
+     */
+    protected function findType(array $types): ?string
+    {
+        return $this->keys()
+            ->intersect($types)
+            ->pop();
     }
 
     /**

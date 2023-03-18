@@ -5,6 +5,7 @@ namespace Telegram\Bot\Commands;
 use Illuminate\Support\Collection;
 use Telegram\Bot\Answers\Answerable;
 use Telegram\Bot\Api;
+use Telegram\Bot\Objects\MessageEntity;
 use Telegram\Bot\Objects\Update;
 
 /**
@@ -105,7 +106,7 @@ abstract class Command implements CommandInterface
     /**
      * Set Command Description.
      *
-     * @param $description
+     * @param string $description
      *
      * @return Command
      */
@@ -271,7 +272,14 @@ abstract class Command implements CommandInterface
             })
             ->implode('');
 
-        return "%/{$this->getName()}{$optionalBotName}{$required}{$optional}{$customRegex}%si";
+        if (empty($this->getAliases())) {
+            $commandName = $this->getName();
+        } else {
+            $names = array_merge([$this->getName()], $this->getAliases());
+            $commandName = '(?:' . implode('|', $names) . ')';
+        }
+
+        return "%/{$commandName}{$optionalBotName}{$required}{$optional}{$customRegex}%si";
     }
 
     private function formatMatches(array $matches, Collection $required, Collection $optional)
@@ -341,12 +349,12 @@ abstract class Command implements CommandInterface
         $message = $this->getUpdate()
             ->getMessage();
 
-        return !$message->hasCommand() ?
+        return ! $message->hasCommand() ?
             collect() :
             $message
                 ->get('entities', collect())
-                ->filter(function ($entity) {
-                    return $entity['type'] === 'bot_command';
+                ->filter(function (MessageEntity $entity) {
+                    return $entity->type === 'bot_command';
                 })
                 ->pluck('offset');
     }

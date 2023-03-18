@@ -17,7 +17,7 @@ class CreatePersonTable extends Migration
             $table->increments('id');
             #account
             $table->unsignedInteger('account_id');
-            $table->foreign('account_id')->references('id')->on('account');
+            $table->foreign('account_id')->references('id')->on('account')->onDelete('cascade');
             $table->string('full_name');
             $table->string('gender');
             $table->string('address');
@@ -25,6 +25,7 @@ class CreatePersonTable extends Migration
             $table->string('phone');
             $table->string('email');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

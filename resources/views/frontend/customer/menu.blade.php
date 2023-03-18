@@ -9,19 +9,19 @@
 						<small>
 						<?php $type = Auth::guard('account_customer')->user()->person->customer->type;  ?>
 						@switch($type)
-						@case('Thường')
+						@case(0)
 						<span class="btn btn-sm btn-secondary">
-							{{$type}} <i class="fas fa-male"></i>
+							Thường <i class="fas fa-male"></i>
 						</span>
 							@break
-						@case('Thân thiết')
+						@case(1)
 						<span class="btn btn-sm btn-info">
-							{{$type}} <i class="far fa-handshake"></i>
+							Thân thiết <i class="far fa-handshake"></i>
 						</span>
 							@break
-						@case('Vip')
+						@case(2)
 						<span class="btn btn-sm btn-warning">
-							{{$type}} <i class="fas fa-crown"></i>
+							VIP <i class="fas fa-crown"></i>
 						</span>
 							@break
 						@default

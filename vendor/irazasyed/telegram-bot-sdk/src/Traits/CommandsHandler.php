@@ -2,8 +2,9 @@
 
 namespace Telegram\Bot\Traits;
 
-use Telegram\Bot\Objects\Update;
+use Psr\Http\Message\RequestInterface;
 use Telegram\Bot\Commands\CommandBus;
+use Telegram\Bot\Objects\Update;
 
 /**
  * CommandsHandler.
@@ -34,22 +35,23 @@ trait CommandsHandler
      * Processes Inbound Commands.
      *
      * @param bool $webhook
-     *
+     * @param RequestInterface|null $request
      * @return Update|Update[]
      */
-    public function commandsHandler(bool $webhook = false)
+    public function commandsHandler(bool $webhook = false, ?RequestInterface $request = null)
     {
-        return $webhook ? $this->useWebHook() : $this->useGetUpdates();
+        return $webhook ? $this->useWebHook($request) : $this->useGetUpdates();
     }
 
     /**
      * Process the update object for a command from your webhook.
      *
+     * @param RequestInterface|null $request
      * @return Update
      */
-    protected function useWebHook(): Update
+    protected function useWebHook(?RequestInterface $request = null): Update
     {
-        $update = $this->getWebhookUpdate();
+        $update = $this->getWebhookUpdate(true, $request);
         $this->processCommand($update);
 
         return $update;
@@ -105,11 +107,12 @@ trait CommandsHandler
     }
 
     /**
+     * @deprecated This method will be protected and signature will be changed in SDK v4.
      * Helper to Trigger Commands.
      *
      * @param string $name   Command Name
      * @param Update $update Update Object
-     * @param null   $entity
+     * @param array|null $entity
      *
      * @return mixed
      */

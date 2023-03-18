@@ -22,6 +22,7 @@ class CreateShippingAddressTable extends Migration
             $table->string('wards');;
             $table->string('address_detail');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

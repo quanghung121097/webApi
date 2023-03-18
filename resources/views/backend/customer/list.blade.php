@@ -38,14 +38,14 @@
 			@foreach($listCustomer as $item)
 			<tr>
 				@switch($item->type)
-				@case('Thường')
-					<td><span class="btn btn-sm btn-secondary">{{$item->type}}</span></td>
+				@case(0)
+					<td><span class="btn btn-sm btn-secondary">Thường</span></td>
 					@break
-				@case('Thân thiết')
-					<td><span class="btn btn-sm btn-info">{{$item->type}}</span></td>
+				@case(1)
+					<td><span class="btn btn-sm btn-info">Thân thiết</span></td>
 					@break
-				@case('Vip')
-					<td><span class="btn btn-sm btn-warning">{{$item->type}}</span></td>
+				@case(2)
+					<td><span class="btn btn-sm btn-warning">VIP</span></td>
 					@break
 				@default
 				@endswitch	

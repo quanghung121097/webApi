@@ -46,9 +46,9 @@
 				<div class="row">
 		    		<div class="col-md-4 col-sm-7">		
 		    			<select name="intType" class="form-control mb-1">
-		    				<option value="0" {{($customer->type=='Thường')?'selected':''}}>Thường</option>
-		    				<option value="1" {{($customer->type=='Thân thiết')?'selected':''}}>Thân thiết</option>
-		    				<option value="2" {{($customer->type=='Vip')?'selected':''}}>Vip</option>
+		    				<option value="0" {{($customer->type== 0)?'selected':''}}>Thường</option>
+		    				<option value="1" {{($customer->type== 1)?'selected':''}}>Thân thiết</option>
+		    				<option value="2" {{($customer->type== 2)?'selected':''}}>Vip</option>
 		    			</select>
 				 	</div>
 				   	<div class="col-md-8 col-sm-5 text-center">
